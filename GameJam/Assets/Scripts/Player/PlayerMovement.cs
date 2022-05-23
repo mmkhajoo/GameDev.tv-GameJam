@@ -13,6 +13,9 @@ namespace DefaultNamespace
         private float _horizontalMove = 0f;
 
         private bool _jump = false;
+        
+        //TODO : Add Events for Play Idle and Move Animation on Player
+        
         private void Update()
         {
             _horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
