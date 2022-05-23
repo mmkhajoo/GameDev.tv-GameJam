@@ -1,4 +1,6 @@
-﻿namespace DefaultNamespace
+﻿using Objects;
+
+namespace DefaultNamespace
 {
     public interface IPlayer
     {
@@ -6,7 +8,7 @@
 
         void Disable();
 
-        void Transition(/*Item Input*/);
+        void Transition(ObjectController gameObject);
 
         void GetOutFromItem();
 

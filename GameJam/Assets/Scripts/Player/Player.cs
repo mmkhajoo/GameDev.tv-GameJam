@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Objects;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -6,6 +6,8 @@ namespace DefaultNamespace
     public class Player : MonoBehaviour , IPlayer
     {
         private PlayerMovement _playerMovement;
+
+        private IObject _objectTransitionedTo;
 
         private void Awake()
         {
@@ -22,15 +24,19 @@ namespace DefaultNamespace
             _playerMovement.enabled = false;
         }
 
-        public void Transition()
+        public void Transition(ObjectController transitableObject)
         {
+            _objectTransitionedTo = transitableObject;
+
             //TODO : Set Item Function For Transition.
             //TODO : Set Player Game Object Child of The Item;
         }
 
         public void GetOutFromItem()
         {
+            Enable();
             
+            //TODO : Set Player Position Base On where Object was
         }
 
         public void Die()

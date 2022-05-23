@@ -3,6 +3,9 @@
     public enum ObjectType
     {
         None = 0,
-        Deadly = 1,
+        Forceable = 1,
+        Metal = 2,
+        
+        
     }
 }

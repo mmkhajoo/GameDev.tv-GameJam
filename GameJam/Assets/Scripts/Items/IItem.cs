@@ -11,9 +11,5 @@ namespace Items
         void Disable();
 
         void Execute();
-
-        void SetPlayer(IPlayer player);
-
-        void Destroy();
     }
 }
