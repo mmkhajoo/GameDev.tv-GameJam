@@ -20,6 +20,8 @@ namespace DefaultNamespace
         {
             _horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 
+            Debug.DrawLine(transform.position, transform.position + transform.right * 10, Color.yellow);
+
             if (Input.GetButtonDown("Jump"))
             {
                 _jump = true;
