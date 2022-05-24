@@ -1,17 +1,61 @@
-﻿using Objects;
+﻿using System;
+using Objects;
 using UnityEngine;
 
 namespace DefaultNamespace
 {
     public class Player : MonoBehaviour , IPlayer
     {
+        #region Fields
+
         private PlayerMovement _playerMovement;
 
         private IObject _objectTransitionedTo;
+        
+        private PlayerStateType _currentPlayerStateType = PlayerStateType.None;
 
+        #endregion
+
+        #region Events
+        public event Action<PlayerStateType> OnPlayerStateChanged;
+        public event Action OnPlayerJumped;
+        
+        #endregion
+
+        #region Private Properties
+
+        private bool isPlayerMoving => _playerMovement.VerticalMove != 0f || _playerMovement.HorizontalMove != 0f;
+
+        #endregion
+        
         private void Awake()
         {
             _playerMovement = GetComponent<PlayerMovement>();
+
+            _playerMovement.OnJump += () => { OnPlayerJumped?.Invoke(); };
+        }
+
+        private void Update()
+        {
+            if (isPlayerMoving)
+            {
+                SetPlayerState(PlayerStateType.Walking);
+            }
+
+            if (!isPlayerMoving && _playerMovement.IsGrounded && _currentPlayerStateType != PlayerStateType.Idle)
+            {
+                SetPlayerState(PlayerStateType.Idle);
+            }
+        }
+
+
+        private void SetPlayerState(PlayerStateType playerStateType)
+        {
+            if(playerStateType == _currentPlayerStateType)
+                return;
+
+            _currentPlayerStateType = playerStateType;
+            OnPlayerStateChanged?.Invoke(_currentPlayerStateType);
         }
 
         public void Enable()
