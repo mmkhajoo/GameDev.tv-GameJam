@@ -128,6 +128,10 @@ public class CharacterController2D : MonoBehaviour
 			Vector3 targetVelocity = Vector3.zero;
 			
 			
+			Debug.Log("Vertical Speed : " +verticalMove);
+			Debug.Log("Horizontal Speed : " +horizontalMove);
+
+			
 			// Move the character Base On The Gravity We Set.
 			if (_constantForce2D.force.y != 0f)
 			{
@@ -135,9 +139,10 @@ public class CharacterController2D : MonoBehaviour
 			}
 			else if(_constantForce2D.force.x != 0f)
 			{
-				targetVelocity = new Vector2(m_Rigidbody2D.velocity.x,verticalMove * 0.1f);
+				targetVelocity = new Vector2(m_Rigidbody2D.velocity.x,verticalMove * 10f);
 			}
 
+			Debug.Log(targetVelocity);
 			
 			// And then smoothing it out and applying it to the character
 			m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity,
