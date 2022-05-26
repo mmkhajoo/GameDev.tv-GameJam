@@ -3,11 +3,14 @@ using UnityEngine;
 
 namespace Items
 {
-    public abstract class Item : MonoBehaviour , IItem
+    public abstract class Item : DragItem , IItem
     {
+        [SerializeField]
+        private ItemType _type;
+
         public ItemType Type => _type;
 
-        [SerializeField]private ItemType _type;
+        public abstract bool IsActive { get; }
         
         public void Enable()
         {
@@ -19,10 +22,20 @@ namespace Items
         public void Disable()
         {
             //TODO : Disable Buttons;
-            
+
             enabled = false;
         }
 
         public abstract void Execute();
+
+        public void Active()
+        {
+
+        }
+
+        public void DeActive()
+        {
+
+        }
     }
 }
