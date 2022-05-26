@@ -8,6 +8,8 @@ namespace DefaultNamespace
     {
         public event Action OnJump;
 
+        public Vector3 Direction => transform.right.normalized;
+
         public float VerticalMove => _verticalMove;
         public float HorizontalMove => _horizontalMove;
         public bool IsGrounded => controller.IsGrounded;
@@ -48,6 +50,8 @@ namespace DefaultNamespace
             _horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 
             Debug.DrawLine(transform.position, transform.position + transform.right * 10, Color.yellow);
+
+            Debug.Log(transform.right);
 
             if (Input.GetButton("Jump") && !_waitForJumpButtonUp)
             {

@@ -76,7 +76,7 @@ public class CharacterController2D : MonoBehaviour
                 if (!wasGrounded)
                 {
                     OnLandEvent.Invoke();
-                    
+
                     OnJumpAvailable?.Invoke();
                     _isJumpCalled = false;
 
@@ -146,20 +146,70 @@ public class CharacterController2D : MonoBehaviour
             // And then smoothing it out and applying it to the character
             m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity,
                 m_MovementSmoothing);
-
-
+            
+            
             // If the input is moving the player right and the player is facing left...
-            if ((horizontalMove > 0 || verticalMove < 0) && !m_FacingRight)
+            if (horizontalMove != 0f)
             {
-                // ... flip the player.
-                Flip();
+                if (horizontalMove > 0 )
+                {
+                    if (transform.rotation.eulerAngles.z == 0)
+                    {
+                        transform.localRotation = Quaternion.Euler(new Vector3(transform.localRotation.eulerAngles.x, 0,
+                            transform.localRotation.eulerAngles.z));
+                    }
+                    else
+                    {
+                        transform.localRotation = Quaternion.Euler(new Vector3(transform.localRotation.eulerAngles.x, 180,
+                            transform.localRotation.eulerAngles.z));
+                    }
+                }
+                else
+                {
+                    if (transform.rotation.eulerAngles.z == 0)
+                    {
+                        transform.localRotation = Quaternion.Euler(new Vector3(transform.localRotation.eulerAngles.x, 180,
+                            transform.localRotation.eulerAngles.z));
+                    }
+                    else
+                    {
+                        transform.localRotation = Quaternion.Euler(new Vector3(transform.localRotation.eulerAngles.x, 0,
+                            transform.localRotation.eulerAngles.z));
+                    }
+                }
             }
-            // Otherwise if the input is moving the player left and the player is facing right...
-            else if ((horizontalMove < 0 || verticalMove > 0) && m_FacingRight)
+
+
+            if (verticalMove != 0)
             {
-                // ... flip the player.
-                Flip();
+                if (verticalMove > 0 )
+                {
+                    if (transform.rotation.eulerAngles.z == 90)
+                    {
+                        transform.localRotation = Quaternion.Euler(new Vector3(0, transform.localRotation.eulerAngles.y,
+                            transform.localRotation.eulerAngles.z));
+                    }
+                    else
+                    {
+                        transform.localRotation = Quaternion.Euler(new Vector3(180, transform.localRotation.eulerAngles.y,
+                            transform.localRotation.eulerAngles.z));
+                    }
+                }
+                else
+                {
+                    if (transform.rotation.eulerAngles.z == 90)
+                    {
+                        transform.localRotation = Quaternion.Euler(new Vector3(180, transform.localRotation.eulerAngles.y,
+                            transform.localRotation.eulerAngles.z));
+                    }
+                    else
+                    {
+                        transform.localRotation = Quaternion.Euler(new Vector3(0, transform.localRotation.eulerAngles.y,
+                            transform.localRotation.eulerAngles.z));
+                    }
+                }
             }
+            
         }
 
         // If the player should jump...
@@ -181,7 +231,8 @@ public class CharacterController2D : MonoBehaviour
 
             if (_constantForce2D.force.y != 0f)
             {
-                m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_JumpForce * -Mathf.Sign(_constantForce2D.force.y));
+                m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x,
+                    m_JumpForce * -Mathf.Sign(_constantForce2D.force.y));
             }
             else if (_constantForce2D.force.x != 0f)
             {
@@ -198,6 +249,18 @@ public class CharacterController2D : MonoBehaviour
         m_FacingRight = !m_FacingRight;
 
         // Multiply the player's x local scale by -1.
-        transform.Rotate(Vector3.up * 180);
+
+        if (transform.localRotation.eulerAngles.y == 0)
+        {
+            transform.localRotation = Quaternion.Euler(new Vector3(transform.localRotation.eulerAngles.x, 180,
+                transform.localRotation.eulerAngles.z));
+        }
+        else
+        {
+            transform.localRotation = Quaternion.Euler(new Vector3(transform.localRotation.eulerAngles.x, 0,
+                transform.localRotation.eulerAngles.z));
+        }
+
+        // transform.Rotate(Vector3.up * 180);
     }
 }
