@@ -88,8 +88,6 @@ namespace DefaultNamespace
             }
 
             controller.Move(_verticalMove * Time.fixedDeltaTime, _horizontalMove * Time.fixedDeltaTime, false, _jump);
-
-            Debug.Log("Jump = " + _jump);
         }
     }
 }
