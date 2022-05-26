@@ -10,5 +10,9 @@ public interface ISlot
 
     DirectionType DirectionType { get; }
 
-    void OnRelease(DragItem dragItem, Vector3 dragPosition);
+    void SetScrollSlot(bool isScroll);
+
+    void OnPlaceDragItem(DragItem dragItem, Vector3 dragPosition);
+
+    Vector3 GetCurrentPositionInSlot(Vector3 inputPosition);
 }

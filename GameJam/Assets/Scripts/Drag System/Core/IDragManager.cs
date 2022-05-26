@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IDragManager 
 {
-    IDragable SelectedObject { get; }
+    DragItem SelectedObject { get; }
 
     Action<IDragable,ISlot> OnRelease { get; }
 

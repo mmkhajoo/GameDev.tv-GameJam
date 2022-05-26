@@ -5,13 +5,20 @@ namespace Objects
 {
     public class ObjectController : MonoBehaviour , IObject
     {
+        [SerializeField]
+        private ObjectType _objectType;
+
         private IPlayer _player;
 
         public bool IsEnable { get; private set; }
-        
+
+        public ObjectType ObjectType => _objectType;
+
         public void SetPlayer(IPlayer player)
         {
             _player = player;
+
+            Enable();
 
             //TODO : Maybe Enable Item Somewhere Else.
         }
