@@ -6,6 +6,12 @@ namespace DefaultNamespace
 {
     public class Player : MonoBehaviour , IPlayer
     {
+
+        [Header("Transition Configs")]
+        
+        [SerializeField]private float _searchObjectRadius;
+        
+        
         #region Fields
 
         private PlayerMovement _playerMovement;
@@ -46,9 +52,17 @@ namespace DefaultNamespace
             {
                 SetPlayerState(PlayerStateType.Idle);
             }
+
+            if (Input.GetKeyDown(KeyCode.E) && _objectTransitionedTo != null)
+            {
+                CheckTransitionObjects();
+            }
+            else
+            {
+                //TODO : Get Out From Object.
+            }
+            
         }
-
-
         private void SetPlayerState(PlayerStateType playerStateType)
         {
             if(playerStateType == _currentPlayerStateType)
@@ -67,10 +81,47 @@ namespace DefaultNamespace
         {
             _playerMovement.enabled = false;
         }
+        
+        private void CheckTransitionObjects()
+        {
+            
+            float minDistance = Single.MaxValue;
 
+            ObjectController selectedObjectController = null;
+
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _searchObjectRadius);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                var currentGameObject = colliders[i].gameObject;
+                
+                if (currentGameObject != gameObject)
+                {
+                   if(currentGameObject.TryGetComponent(out ObjectController objectController))
+                   {
+                       var distance = Vector3.Distance(transform.position, objectController.transform.position);
+                       
+                       if (distance < minDistance)
+                       {
+                           selectedObjectController = objectController;
+                           minDistance = distance;
+                       }
+                   }
+                }
+            }
+
+            if (selectedObjectController != null)
+            {
+                Transition(selectedObjectController);
+            }
+        }
+        
         public void Transition(ObjectController transitableObject)
         {
             _objectTransitionedTo = transitableObject;
+            
+            
+            
+            
 
             //TODO : Set Item Function For Transition.
             //TODO : Set Player Game Object Child of The Item;
