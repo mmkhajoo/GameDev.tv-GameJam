@@ -13,7 +13,7 @@ namespace DefaultNamespace
         [SerializeField] private ConstantForce2D _constantForce2D;
         [SerializeField] private PlayerMovement _playerMovement;
 
-        private Dictionary<DirectionType, Transform> _groundDictionary;
+        public Dictionary<DirectionType, Transform> gorundDictionary;
 
         private DirectionType _previousDirectionType;
         private DirectionType _currentDirectionType;
@@ -23,7 +23,7 @@ namespace DefaultNamespace
             _constantForce2D = GetComponent<ConstantForce2D>();
             _playerMovement = GetComponent<PlayerMovement>();
 
-            _groundDictionary = new Dictionary<DirectionType, Transform>();
+            gorundDictionary = new Dictionary<DirectionType, Transform>();
 
             var directions = Enum.GetValues(typeof(DirectionType)).Cast<DirectionType>()
                 .Where(x => x != DirectionType.None);
@@ -32,7 +32,7 @@ namespace DefaultNamespace
             {
                 var ground = GameObject.Find(directionType.ToString() + "Ground");
 
-                _groundDictionary.Add(directionType, ground.transform);
+                gorundDictionary.Add(directionType, ground.transform);
             }
         }
 
@@ -43,7 +43,7 @@ namespace DefaultNamespace
 
             _previousDirectionType = _currentDirectionType;
 
-            foreach (var ground in _groundDictionary)
+            foreach (var ground in gorundDictionary)
             {
                 float groundDistance;
 

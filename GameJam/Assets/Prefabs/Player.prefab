@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 4438698567831766340}
   - component: {fileID: 1889926374}
   - component: {fileID: 1889926375}
+  - component: {fileID: 1885473346025870658}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -274,7 +275,7 @@ MonoBehaviour:
   m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 128
   m_GroundCheck: {fileID: 1813503967510469674}
   m_CeilingCheck: {fileID: 1813503969352972173}
   m_CrouchDisableCollider: {fileID: 0}
@@ -388,6 +389,20 @@ MonoBehaviour:
   _gravityValue: 30
   _constantForce2D: {fileID: 0}
   _playerMovement: {fileID: 0}
+--- !u!114 &1885473346025870658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813503968741676677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a62d623833cc9614cbc0e9757c922e83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dashDistance: 5
+  _dashTime: 0.1
 --- !u!1 &1813503969248861387
 GameObject:
   m_ObjectHideFlags: 0
