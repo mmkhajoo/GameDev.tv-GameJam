@@ -7,35 +7,48 @@ namespace Items
     {
         [SerializeField]
         private ItemType _type;
+        private bool _isActive;
+        private bool _isEnable;
 
         public ItemType Type => _type;
 
-        public abstract bool IsActive { get; }
-        
-        public void Enable()
-        {
-            //TODO : Enable Buttons;
-            
-            enabled = true;
-        }
+        public bool IsActive => _isActive;
 
-        public void Disable()
-        {
-            //TODO : Disable Buttons;
+        public bool IsEnable => _isEnable;
 
-            enabled = false;
-        }
-
+        public abstract void Initialize();
         public abstract void Execute();
 
-        public void Active()
+        public virtual void Enable()
         {
-
+            _isEnable = true;
+            gameObject.SetActive(true);
         }
 
-        public void DeActive()
+        public virtual void Disable()
         {
+            _isEnable = false;
+            gameObject.SetActive(false);
+        }
 
+
+        public virtual void Active()
+        {
+            _isActive = true;
+        }
+
+        public virtual void DeActive()
+        {
+            _isActive = false;
+        }
+
+
+        protected override void Update()
+        {
+            base.Update();
+
+            if (IsActive)
+                Execute();
         }
     }
 }
