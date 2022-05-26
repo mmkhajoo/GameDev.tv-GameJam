@@ -401,7 +401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a62d623833cc9614cbc0e9757c922e83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dashDistance: 5
+  _dashDistance: 6
   _dashTime: 0.1
 --- !u!1 &1813503969248861387
 GameObject:
