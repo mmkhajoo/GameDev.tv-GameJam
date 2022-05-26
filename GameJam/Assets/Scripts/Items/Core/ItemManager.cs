@@ -5,18 +5,79 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    private IItem _activeItem;
-
     [SerializeField]
-    private List<IItem> _items;
+    private List<Item> _items;
+    private Item _currentItem;
 
+
+    private bool _haveEnabledItem;
+
+    public void Initialize()
+    {
+        _haveEnabledItem = false;
+
+        foreach (var item in _items)
+        {
+            item.Disable();
+        }
+        _items[0].Enable();
+    }
+
+    private void Start()
+    {
+        Initialize();
+    }
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            _activeItem.DeActive();
+            EnableNextItem();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            ActiveItem();
+        }
+
+
+    }
+
+    private void ActiveItem()
+    {
+        if (!_haveEnabledItem)
+        {
+            _currentItem.Active();
+            _haveEnabledItem = true;
+        }
+        else
+        {
+            _currentItem.DeActive();
+            _haveEnabledItem = false;
         }
     }
 
+    private void EnableNextItem()
+    {
+        bool nextActive = false;
+        for (int i = 0; i < _items.Count; i++)
+        {
+            if (nextActive)
+            {
+                _items[i].Enable();
+                _currentItem = _items[i];
+                return;
+            }
+
+            if (_items[i].IsEnable)
+            {
+                _items[i].Disable();
+                nextActive = true;
+            }
+        }
+
+        _items[0].Enable();
+        _currentItem = _items[0];
+
+    }
 }
