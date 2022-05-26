@@ -10,25 +10,23 @@ namespace Items
         private bool _isActive;
         private bool _isEnable;
 
-
         public ItemType Type => _type;
 
         public bool IsActive => _isActive;
 
         public bool IsEnable => _isEnable;
 
+        public abstract void Initialize();
         public abstract void Execute();
 
-        public void Enable()
+        public virtual void Enable()
         {
-            //TODO : Enable Buttons;
             _isEnable = true;
             gameObject.SetActive(true);
         }
 
-        public void Disable()
+        public virtual void Disable()
         {
-            //TODO : Disable Buttons;
             _isEnable = false;
             gameObject.SetActive(false);
         }
@@ -37,13 +35,20 @@ namespace Items
         public virtual void Active()
         {
             _isActive = true;
-            enabled = true;
         }
 
         public virtual void DeActive()
         {
             _isActive = false;
-            enabled = false;
+        }
+
+
+        protected override void Update()
+        {
+            base.Update();
+
+            if (IsActive)
+                Execute();
         }
     }
 }

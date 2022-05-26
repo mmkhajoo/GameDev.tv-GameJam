@@ -30,7 +30,24 @@ public class VerticalSlotItem : SlotItem
 
     #region Public Methods
 
-    public override void OnRelease(DragItem dragItem, Vector3 dragPosition)
+    public override Vector3 GetCurrentPositionInSlot(Vector3 inputPosition)
+    {
+        Vector2 setPosition = Vector2.zero;
+
+        if (inputPosition.y > MaxPos)
+            setPosition = new Vector2(transform.position.x, MaxPos);
+
+        else if (inputPosition.y < MinPos)
+            setPosition = new Vector2(transform.position.x, MinPos);
+
+        else
+            setPosition = new Vector2(transform.position.x, inputPosition.y);
+
+        return setPosition;
+    }
+
+
+    public override void OnPlaceDragItem(DragItem dragItem, Vector3 dragPosition)
     {
 
         Vector2 setPosition = Vector2.zero;
@@ -46,7 +63,7 @@ public class VerticalSlotItem : SlotItem
 
         dragItem.transform.position = Vector2.Lerp(dragItem.transform.position, setPosition, 1f);
 
-        dragItem.OnValidPlacement(DirectionType);
+        dragItem.OnValidPlacement(DirectionType, this);
     }
 
     #endregion

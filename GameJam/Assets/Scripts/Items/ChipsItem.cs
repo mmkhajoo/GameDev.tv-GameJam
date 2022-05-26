@@ -8,4 +8,9 @@ public class ChipsItem : Item
     public override void Execute()
     {
     }
+
+    public override void Initialize()
+    {
+
+    }
 }

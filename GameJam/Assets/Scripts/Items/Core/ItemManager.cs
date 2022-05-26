@@ -8,19 +8,22 @@ public class ItemManager : MonoBehaviour
     [SerializeField]
     private List<Item> _items;
     private Item _currentItem;
-
+    private bool _canActiveItem;
 
     private bool _haveEnabledItem;
 
     public void Initialize()
     {
         _haveEnabledItem = false;
+        _canActiveItem = true;
 
         foreach (var item in _items)
         {
+            item.Initialize();
             item.Disable();
         }
         _items[0].Enable();
+        _currentItem = _items[0];
     }
 
     private void Start()
@@ -30,6 +33,15 @@ public class ItemManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+            _canActiveItem = false;
+
+        if (Input.GetMouseButtonUp(0))
+            _canActiveItem = true;
+
+        if (!_canActiveItem)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             EnableNextItem();
@@ -72,6 +84,7 @@ public class ItemManager : MonoBehaviour
             if (_items[i].IsEnable)
             {
                 _items[i].Disable();
+                _haveEnabledItem = false;
                 nextActive = true;
             }
         }

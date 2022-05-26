@@ -4,11 +4,30 @@ using UnityEngine;
 
 public abstract class SlotItem : MonoBehaviour, ISlot
 {
-    public abstract float MaxPos { get; }
+    [SerializeField]
+    protected Color _activeSlotColor;
 
+    private Color _firstColor;
+    private SpriteRenderer _spriteRenderer;
+
+    public abstract float MaxPos { get; }
     public abstract float MinPos { get; }
 
     public abstract DirectionType DirectionType { get; }
+    public abstract void OnPlaceDragItem(DragItem dragItem, Vector3 dragPosition);
+    public abstract Vector3 GetCurrentPositionInSlot(Vector3 inputPosition);
 
-    public abstract void OnRelease(DragItem dragItem, Vector3 dragPosition);
+    private void Awake()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _firstColor = _spriteRenderer.color;
+    }
+
+    public void SetScrollSlot(bool isScroll)
+    {
+        if (isScroll)
+            _spriteRenderer.color = _activeSlotColor;
+        else
+            _spriteRenderer.color = _firstColor;
+    }
 }
