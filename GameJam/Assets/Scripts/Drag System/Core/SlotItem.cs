@@ -10,8 +10,8 @@ public abstract class SlotItem : MonoBehaviour, ISlot
     private Color _firstColor;
     private SpriteRenderer _spriteRenderer;
 
-    public abstract float MaxPos { get; }
-    public abstract float MinPos { get; }
+    public abstract Transform MaxPos { get; }
+    public abstract Transform MinPos { get; }
 
     public abstract DirectionType DirectionType { get; }
     public abstract void OnPlaceDragItem(DragItem dragItem, Vector3 dragPosition);

@@ -142,6 +142,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2994230347548123714}
     m_Modifications:
+    - target: {fileID: 2081270375673383661, guid: 5b8cb316198cc354896a8dc5e9e2f87c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2081270376319023186, guid: 5b8cb316198cc354896a8dc5e9e2f87c, type: 3}
       propertyPath: _powerBaloon
       value: 300
@@ -193,6 +197,10 @@ PrefabInstance:
     - target: {fileID: 2081270376319023191, guid: 5b8cb316198cc354896a8dc5e9e2f87c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081270376786017361, guid: 5b8cb316198cc354896a8dc5e9e2f87c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b8cb316198cc354896a8dc5e9e2f87c, type: 3}
@@ -266,6 +274,18 @@ PrefabInstance:
     - target: {fileID: 1171277288731571178, guid: 2d46b2fc276624540ab943311a808888, type: 3}
       propertyPath: m_Name
       value: Magnet
+      objectReference: {fileID: 0}
+    - target: {fileID: 1171277289585601785, guid: 2d46b2fc276624540ab943311a808888, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1171277289902162216, guid: 2d46b2fc276624540ab943311a808888, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1171277289991216602, guid: 2d46b2fc276624540ab943311a808888, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d46b2fc276624540ab943311a808888, type: 3}
