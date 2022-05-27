@@ -5,9 +5,6 @@ namespace DefaultNamespace
 {
     public interface IPlayer
     {
-        event Action<PlayerStateType> OnPlayerStateChanged;
-        event Action OnPlayerJumped;
-        
         void Enable();
 
         void Disable();

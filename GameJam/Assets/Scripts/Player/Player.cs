@@ -2,6 +2,7 @@
 using Managers;
 using Objects;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace DefaultNamespace
 {
@@ -34,10 +35,10 @@ namespace DefaultNamespace
         #endregion
 
         #region Events
-
-        public event Action<PlayerStateType> OnPlayerStateChanged;
-        public event Action OnPlayerLand;
-        public event Action OnPlayerJumped;
+        [Header("Events")]
+        [SerializeField]public PlayerStateEvent _onPlayerStateChanged;
+        [SerializeField]public UnityEvent OnPlayerLand;
+        [SerializeField]public UnityEvent OnPlayerJumped;
 
         #endregion
 
@@ -95,7 +96,7 @@ namespace DefaultNamespace
                 return;
 
             _currentPlayerStateType = playerStateType;
-            OnPlayerStateChanged?.Invoke(_currentPlayerStateType);
+            _onPlayerStateChanged?.Invoke(_currentPlayerStateType);
         }
 
         public void Enable()
@@ -217,4 +218,10 @@ namespace DefaultNamespace
             }
         }
     }
+    
+    [Serializable]
+    public class PlayerStateEvent : UnityEvent<PlayerStateType>
+    {
+    }
+
 }
