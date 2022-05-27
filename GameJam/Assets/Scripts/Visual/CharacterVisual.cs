@@ -38,7 +38,6 @@ public class CharacterVisual : MonoBehaviour
 
    public void OnPlayerStateChange(PlayerStateType state)
    {
-      Debug.Log(state);
       switch (state)
       {
          case PlayerStateType.None:
@@ -61,16 +60,19 @@ public class CharacterVisual : MonoBehaviour
 
    public void OnPlayerJump()
    {
-      Debug.Log("Jump");
       DoJump();
    }
    
    public void OnPlayerLand()
    {
-      Debug.Log("Land");
       DoLand();
    }
 
+   public void OnPlayerDash()
+   {
+      DoDash();
+   }
+   
    private void DoWalk()
    {
       moveParticle.SetActive(true);
