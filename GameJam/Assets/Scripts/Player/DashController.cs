@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DashController : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class DashController : MonoBehaviour
 
     private float _counter;
     private bool _dashClicked;
+
+    [Header("Event")] [SerializeField]private UnityEvent _onDash;
 
     private void Awake()
     {
@@ -50,7 +53,7 @@ public class DashController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Debug Multiplier") /*&& !_dashClicked*/)
+        if (Input.GetButtonDown("Debug Multiplier") && !_dashClicked)
         {
             if (CanDash())
             {
@@ -75,8 +78,6 @@ public class DashController : MonoBehaviour
         _constantForce2D.enabled = false;
         
         var force = _playerMovement.Direction * _forceValue;
-
-        Debug.Log(force);
         
         _boxCollider2D.isTrigger = true;
         _circleCollider2D.isTrigger = true;
@@ -84,6 +85,8 @@ public class DashController : MonoBehaviour
         _rigidbody2D.velocity = force;
         
         _dashClicked = true;
+        
+        _onDash?.Invoke();
     }
 
     private bool CanDash()

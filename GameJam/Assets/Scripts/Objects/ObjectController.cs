@@ -41,6 +41,8 @@ namespace Objects
         {
             _player = player;
 
+            _rigidbody2D.isKinematic = false;
+
             Enable();
 
             //TODO : Maybe Enable Item Somewhere Else.
@@ -66,7 +68,7 @@ namespace Objects
         protected virtual void Enable()
         {
             IsEnable = true;
-            _rigidbody2D.isKinematic = false;
+            // _rigidbody2D.isKinematic = false;
         }
 
         protected virtual void Disable()
@@ -74,7 +76,7 @@ namespace Objects
             IsEnable = false;
 
             _rigidbody2D.velocity = Vector2.zero;
-            _rigidbody2D.isKinematic = true;
+            // _rigidbody2D.isKinematic = true;
         }
 
         #endregion

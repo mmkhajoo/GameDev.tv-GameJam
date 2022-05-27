@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1275539641102498293}
   - component: {fileID: 1275539641102498292}
   - component: {fileID: 1275539641102498298}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Transitionable Object
   m_TagString: Transitionable
   m_Icon: {fileID: 0}
@@ -147,3 +147,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectType: 0
+  _transitionTime: 0.1

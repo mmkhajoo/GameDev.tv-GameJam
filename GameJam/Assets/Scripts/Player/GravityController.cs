@@ -15,7 +15,6 @@ namespace DefaultNamespace
 
         public Dictionary<DirectionType, Transform> gorundDictionary;
 
-        private DirectionType _previousDirectionType;
         private DirectionType _currentDirectionType;
 
         private void Awake()
@@ -40,9 +39,7 @@ namespace DefaultNamespace
         private void Update()
         {
             float distance = Single.MaxValue;
-
-            _previousDirectionType = _currentDirectionType;
-
+            
             foreach (var ground in gorundDictionary)
             {
                 float groundDistance;
@@ -65,16 +62,11 @@ namespace DefaultNamespace
                     distance = groundDistance;
                 }
             }
-
-            SetGravity();
         }
         
         public void SetGravity(bool isCheckingGround = true)
         {
-            if (_previousDirectionType == _currentDirectionType)
-                return;
-            
-            if(!_playerMovement.IsGrounded && isCheckingGround)
+            if(_playerMovement.IsGrounded && isCheckingGround)
                 return;
             
             SetGravity(_currentDirectionType);
