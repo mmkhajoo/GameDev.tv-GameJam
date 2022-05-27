@@ -13,7 +13,6 @@ namespace Objects
         bool IsEnable { get; }
 
         ObjectType ObjectType { get; }
-        ObjectFeatureType ObjectFeatureType { get; }
 
         void SetPlayer(IPlayer player);
 

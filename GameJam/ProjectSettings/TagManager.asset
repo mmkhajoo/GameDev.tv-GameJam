@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Item
   - Object
+  - Transitionable
+  - Deadly
+  - Win
   layers:
   - Default
   - TransparentFX

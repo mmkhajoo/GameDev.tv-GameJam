@@ -7,6 +7,7 @@ namespace DefaultNamespace
     public class PlayerMovement : MonoBehaviour
     {
         public event Action OnJump;
+        public event Action OnLand;
 
         public Vector3 Direction => transform.right.normalized;
 
@@ -34,6 +35,10 @@ namespace DefaultNamespace
             _constantForce2D = GetComponent<ConstantForce2D>();
 
             controller.OnJumpAvailable += JumpAvailable;
+            controller.OnLandEvent.AddListener(() =>
+            {
+                OnLand?.Invoke();
+            });
         }
 
         private void JumpAvailable()

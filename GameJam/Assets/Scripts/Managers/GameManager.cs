@@ -14,5 +14,26 @@ namespace Managers
             if (instance == null)
                 instance = this;
         }
+
+        public void LoseGame()
+        {
+            //TODO : Show the Lose Panel;
+        }
+
+        public void WinGame()
+        {
+            //TODO : Show the Win Panel;
+        }
+
+        public void ResetLevel()
+        {
+            
+        }
+
+        public void GoToNextLevel()
+        {
+            
+        }
+        
     }
 }
