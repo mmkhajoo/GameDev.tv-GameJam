@@ -6,7 +6,6 @@ namespace DefaultNamespace
 {
     public class Player : MonoBehaviour , IPlayer
     {
-
         [Header("Transition Configs")]
         
         [SerializeField]private float _searchObjectRadius = 1f;
@@ -174,23 +173,22 @@ namespace DefaultNamespace
 
         public void GetOutFromItem()
         {
-            var playerHeightPlusHalfOfObjectHeight = _boxCollider2D.size.y + _circleCollider2D.radius + _objectTransitionedTo.Collider2D.bounds.size.y/2;
-            
-            var targetPosition = _objectTransitionedTo.Transform.position - Vector3.down * playerHeightPlusHalfOfObjectHeight;
+            var targetPosition = _objectTransitionedTo.Transform.position + Vector3.down * 0.1f;
             
             _isTransitioning = true;
-
+            
             LeanTween.move(gameObject, targetPosition, _transitionTime);
+            
             LeanTween.scale(gameObject, Vector3.one, _transitionTime).setOnComplete(() =>
             {
-                Enable();
-
                 _isTransitioning = false;
+                
+                Enable();
                 
                 _objectTransitionedTo.PlayerGotOut();
                 _objectTransitionedTo = null;
             });
-            
+
             //TODO : Set Player Position Base On where Object was
         }
 
