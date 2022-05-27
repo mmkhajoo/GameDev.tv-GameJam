@@ -2,6 +2,7 @@
 using DefaultNamespace;
 using Managers;
 using UnityEngine;
+using UnityEngine.Events;
 using Object = UnityEngine.Object;
 
 namespace Objects
@@ -22,13 +23,20 @@ namespace Objects
         #endregion
 
         [SerializeField] private ObjectType _objectType;
-
+        
         [Header("Win Transition Time")] [SerializeField]
         private float _transitionTime = 0.1f;
-
+        
+        #region Events
+        [Header("Events")] 
+        [SerializeField] private UnityEvent OnTransitioned;
+        [SerializeField] private UnityEvent OnPlayerGotOut;
+        #endregion
+        
         private Collider2D _collider2D;
         private Rigidbody2D _rigidbody2D;
 
+       
         private void Awake()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -43,6 +51,7 @@ namespace Objects
 
             Enable();
 
+            OnTransitioned.Invoke();
             //TODO : Maybe Enable Item Somewhere Else.
         }
 
@@ -51,6 +60,8 @@ namespace Objects
             _player = null;
 
             Disable();
+            
+            OnPlayerGotOut.Invoke();
         }
 
         public void Destroy(bool isDestroySelf)

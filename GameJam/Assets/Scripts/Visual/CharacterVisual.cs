@@ -1,6 +1,8 @@
 using System;
+using System.IO;
 using DefaultNamespace;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class CharacterVisual : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class CharacterVisual : MonoBehaviour
    [SerializeField] private GameObject landParticle;
    [SerializeField] private GameObject dashParticle;
    [SerializeField] private GameObject dieParticle;
+   
    
    private static readonly int Speed = Animator.StringToHash("Speed");
    private static readonly int Jump = Animator.StringToHash("Jump");
