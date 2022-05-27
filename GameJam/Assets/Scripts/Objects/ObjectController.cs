@@ -1,11 +1,13 @@
-﻿using DefaultNamespace;
+﻿using System;
+using DefaultNamespace;
+using Managers;
 using UnityEngine;
 
 namespace Objects
 {
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(Collider2D))]
-    public class ObjectController : MonoBehaviour , IObject
+    public class ObjectController : MonoBehaviour, IObject
     {
         #region Properties
 
@@ -15,15 +17,14 @@ namespace Objects
         public Rigidbody2D Rigidbody2D => _rigidbody2D;
         public bool IsEnable { get; private set; }
         public ObjectType ObjectType => _objectType;
-        public ObjectFeatureType ObjectFeatureType => _objectFeatureType;
-        
-        #endregion
-        
-        
-        [SerializeField]
-        private ObjectType _objectType;
 
-        [SerializeField] private ObjectFeatureType _objectFeatureType;
+        #endregion
+
+
+        [SerializeField] private ObjectType _objectType;
+
+        [Header("Win Transition Time")] [SerializeField]
+        private float _transitionTime = 0.1f;
 
         private Collider2D _collider2D;
         private Rigidbody2D _rigidbody2D;
@@ -32,7 +33,7 @@ namespace Objects
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _collider2D = GetComponent<Collider2D>();
-            
+
             Disable();
         }
 
@@ -48,15 +49,15 @@ namespace Objects
         public void PlayerGotOut()
         {
             _player = null;
-            
+
             Disable();
         }
 
         public void Destroy()
         {
             //TODO : Destroy Object Self.
-            
-            if(_player != null)
+
+            if (_player != null)
                 _player.Die();
         }
 
@@ -71,13 +72,28 @@ namespace Objects
         protected virtual void Disable()
         {
             IsEnable = false;
-            
+
             _rigidbody2D.velocity = Vector2.zero;
             _rigidbody2D.isKinematic = true;
         }
 
         #endregion
-        
-        //TODO : OnTrigger Enter Check the ObjectType if its Deadly Destroy Object;
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.collider.CompareTag("Deadly"))
+            {
+                Destroy();
+            }
+
+            if (collision.collider.CompareTag("Win"))
+            {
+                if (_player != null)
+                {
+                    LeanTween.move(gameObject, collision.collider.transform, _transitionTime);
+                    LeanTween.scale(gameObject, Vector3.zero, _transitionTime).setOnComplete(GameManager.instance.WinGame);
+                }
+            }
+        }
     }
 }

@@ -1,21 +1,21 @@
 ﻿using System;
+using Managers;
 using Objects;
 using UnityEngine;
 
 namespace DefaultNamespace
 {
-    public class Player : MonoBehaviour , IPlayer
+    public class Player : MonoBehaviour, IPlayer
     {
-        [Header("Transition Configs")]
-        
-        [SerializeField]private float _searchObjectRadius = 1f;
+        [Header("Transition Configs")] [SerializeField]
+        private float _searchObjectRadius = 1f;
 
         [SerializeField] private float _transitionTime = 0.5f;
-        
+
         #region Fields
-        
+
         private ObjectController _objectTransitionedTo;
-        
+
         private PlayerStateType _currentPlayerStateType = PlayerStateType.None;
 
         #endregion
@@ -30,13 +30,15 @@ namespace DefaultNamespace
         private BoxCollider2D _boxCollider2D;
         private CircleCollider2D _circleCollider2D;
         private Rigidbody2D _rigidbody2D;
-        
+
         #endregion
 
         #region Events
+
         public event Action<PlayerStateType> OnPlayerStateChanged;
+        public event Action OnPlayerLand;
         public event Action OnPlayerJumped;
-        
+
         #endregion
 
         #region Private Properties
@@ -46,7 +48,7 @@ namespace DefaultNamespace
         #endregion
 
         private bool _isTransitioning;
-        
+
         private void Awake()
         {
             _playerMovement = GetComponent<PlayerMovement>();
@@ -59,6 +61,7 @@ namespace DefaultNamespace
             _rigidbody2D = GetComponent<Rigidbody2D>();
 
             _playerMovement.OnJump += () => { OnPlayerJumped?.Invoke(); };
+            _playerMovement.OnLand += () => {OnPlayerLand?.Invoke(); };
         }
 
         private void Update()
@@ -85,9 +88,10 @@ namespace DefaultNamespace
                 }
             }
         }
+
         private void SetPlayerState(PlayerStateType playerStateType)
         {
-            if(playerStateType == _currentPlayerStateType)
+            if (playerStateType == _currentPlayerStateType)
                 return;
 
             _currentPlayerStateType = playerStateType;
@@ -103,7 +107,6 @@ namespace DefaultNamespace
             _constantForce2D.enabled = true;
             _gravityController.enabled = true;
             _dashController.enabled = true;
-            
         }
 
         public void Disable()
@@ -118,10 +121,9 @@ namespace DefaultNamespace
             _gravityController.enabled = false;
             _dashController.enabled = false;
         }
-        
+
         private void CheckTransitionObjects()
         {
-            
             float minDistance = Single.MaxValue;
 
             ObjectController selectedObjectController = null;
@@ -130,19 +132,19 @@ namespace DefaultNamespace
             for (int i = 0; i < colliders.Length; i++)
             {
                 var currentGameObject = colliders[i].gameObject;
-                
+
                 if (currentGameObject != gameObject)
                 {
-                   if(currentGameObject.TryGetComponent(out ObjectController objectController))
-                   {
-                       var distance = Vector3.Distance(transform.position, objectController.transform.position);
-                       
-                       if (distance < minDistance && objectController.ObjectFeatureType == ObjectFeatureType.Transitionable)
-                       {
-                           selectedObjectController = objectController;
-                           minDistance = distance;
-                       }
-                   }
+                    if (currentGameObject.TryGetComponent(out ObjectController objectController))
+                    {
+                        var distance = Vector3.Distance(transform.position, objectController.transform.position);
+
+                        if (distance < minDistance && objectController.CompareTag("Transitionable"))
+                        {
+                            selectedObjectController = objectController;
+                            minDistance = distance;
+                        }
+                    }
                 }
             }
 
@@ -151,7 +153,7 @@ namespace DefaultNamespace
                 Transition(selectedObjectController);
             }
         }
-        
+
         public void Transition(ObjectController transitableObject)
         {
             _objectTransitionedTo = transitableObject;
@@ -167,36 +169,50 @@ namespace DefaultNamespace
             Disable();
 
             _isTransitioning = false;
-            
+
             _objectTransitionedTo.SetPlayer(this);
         }
 
         public void GetOutFromItem()
         {
             var targetPosition = _objectTransitionedTo.Transform.position + Vector3.down * 0.1f;
-            
+
             _isTransitioning = true;
-            
+
             LeanTween.move(gameObject, targetPosition, _transitionTime);
-            
+
             LeanTween.scale(gameObject, Vector3.one, _transitionTime).setOnComplete(() =>
             {
                 _isTransitioning = false;
-                
+
                 Enable();
-                
+
                 _objectTransitionedTo.PlayerGotOut();
                 _objectTransitionedTo = null;
             });
-
-            //TODO : Set Player Position Base On where Object was
         }
 
         public void Die()
         {
-            //TODO : Create Event and and fire it when player die.
+            Disable();
+            
+            //TODO : Play Die Animation;
+
+            GameManager.instance.LoseGame();
         }
-        
-        //TODO : Search for Item Around Player for Transition in Update Method.
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.collider.CompareTag("Deadly"))
+            {
+                Die();
+            }
+
+            if (collision.collider.CompareTag("Win"))
+            {
+                LeanTween.move(gameObject, collision.collider.transform, _transitionTime);
+                LeanTween.scale(gameObject, Vector3.zero, _transitionTime).setOnComplete(GameManager.instance.WinGame);
+            }
+        }
     }
 }
