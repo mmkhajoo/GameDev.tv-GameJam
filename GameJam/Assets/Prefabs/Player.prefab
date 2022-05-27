@@ -386,8 +386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a62d623833cc9614cbc0e9757c922e83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dashDistance: 6
-  _dashTime: 0.1
+  _dashDistance: 4
+  _dashTime: 0.25
   _onDash:
     m_PersistentCalls:
       m_Calls: []

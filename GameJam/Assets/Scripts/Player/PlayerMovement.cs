@@ -54,7 +54,7 @@ namespace DefaultNamespace
             _verticalMove = Input.GetAxisRaw("Vertical") * runSpeed;
             _horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 
-            Debug.DrawLine(transform.position, transform.position + transform.right * 10, Color.yellow);
+            // Debug.DrawLine(transform.position, transform.position + transform.right * 10, Color.yellow);
             
             if (Input.GetButton("Jump") && !_waitForJumpButtonUp)
             {

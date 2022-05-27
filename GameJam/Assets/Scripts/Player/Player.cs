@@ -35,10 +35,12 @@ namespace DefaultNamespace
         #endregion
 
         #region Events
-        [Header("Events")]
-        [SerializeField]public PlayerStateEvent _onPlayerStateChanged;
-        [SerializeField]public UnityEvent OnPlayerLand;
-        [SerializeField]public UnityEvent OnPlayerJumped;
+
+        [Header("Events")] [SerializeField] private PlayerStateEvent _onPlayerStateChanged;
+        [SerializeField] private UnityEvent OnPlayerLand;
+        [SerializeField] private UnityEvent OnPlayerJumped;
+        [SerializeField] private UnityEvent OnTransitioned;
+        [SerializeField] private UnityEvent OnPlayerGotOut;
 
         #endregion
 
@@ -62,7 +64,7 @@ namespace DefaultNamespace
             _rigidbody2D = GetComponent<Rigidbody2D>();
 
             _playerMovement.OnJump += () => { OnPlayerJumped?.Invoke(); };
-            _playerMovement.OnLand += () => {OnPlayerLand?.Invoke(); };
+            _playerMovement.OnLand += () => { OnPlayerLand?.Invoke(); };
         }
 
         private void Update()
@@ -106,7 +108,6 @@ namespace DefaultNamespace
             _boxCollider2D.isTrigger = false;
             _circleCollider2D.isTrigger = false;
             _constantForce2D.enabled = true;
-            _gravityController.enabled = true;
             _dashController.enabled = true;
         }
 
@@ -119,7 +120,6 @@ namespace DefaultNamespace
             _boxCollider2D.isTrigger = true;
             _circleCollider2D.isTrigger = true;
             _constantForce2D.enabled = false;
-            _gravityController.enabled = false;
             _dashController.enabled = false;
         }
 
@@ -172,10 +172,14 @@ namespace DefaultNamespace
             _isTransitioning = false;
 
             _objectTransitionedTo.SetPlayer(this);
+            
+            OnTransitioned?.Invoke();
         }
 
         public void GetOutFromItem()
         {
+            transform.position = _objectTransitionedTo.Transform.position;
+            
             var targetPosition = _objectTransitionedTo.Transform.position + Vector3.down * 0.1f;
 
             _isTransitioning = true;
@@ -190,15 +194,17 @@ namespace DefaultNamespace
 
                 _objectTransitionedTo.PlayerGotOut();
                 _objectTransitionedTo = null;
+
+                _gravityController.SetGravity();
                 
-                _gravityController.SetGravity(false);
+                OnPlayerGotOut?.Invoke();
             });
         }
 
         public void Die()
         {
             Disable();
-            
+
             //TODO : Play Die Animation;
 
             GameManager.instance.LoseGame();
@@ -218,10 +224,9 @@ namespace DefaultNamespace
             }
         }
     }
-    
+
     [Serializable]
     public class PlayerStateEvent : UnityEvent<PlayerStateType>
     {
     }
-
 }
