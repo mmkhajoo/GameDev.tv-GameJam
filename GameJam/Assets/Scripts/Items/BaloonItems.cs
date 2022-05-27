@@ -4,31 +4,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MagnetItem : Item
+public class BaloonItems : Item
 {
     [Header("Detect Variables")]
     [SerializeField]
     private float _distanceDetection;
     [SerializeField]
     private float _detectionSizeMulti;
-    [SerializeField]
-    private float _disableSizeMulti;
 
-    [Header("Magnet Stats")]
+    [Header("Baloon Stats")]
     [SerializeField]
-    private float _powerMagnet;
+    private float _powerBaloon;
+    [SerializeField]
+    private float _activeTime;
 
-    private Rigidbody2D objectRigidBoody;
     private BoxCollider2D _collider;
+    private Color _rayColor;
     private Vector2 _directionDetect;
-    private ObjectController _objectPosses;
-
+    private float tmp_time;
 
     public override void Initialize()
     {
         base.Initialize();
 
         _collider = GetComponent<BoxCollider2D>();
+        tmp_time = 0f;
     }
 
     public override void Execute()
@@ -39,41 +39,27 @@ public class MagnetItem : Item
         {
             if (hit.transform.TryGetComponent<ObjectController>(out ObjectController objectPosses))
             {
-                if (objectPosses.ObjectType == ObjectType.Metal /* && objectPosses.IsEnable */)
+                if (objectPosses.ObjectType == ObjectType.Forceable /* && objectPosses.IsEnable */)
                 {
-                    _objectPosses = objectPosses;
+                    objectPosses.Rigidbody2D.isKinematic = false;
 
-                    _objectPosses.Rigidbody2D.gravityScale = 0f;
+                    Vector2 _directionPush = objectPosses.transform.position - transform.position;
 
-                    _objectPosses.Rigidbody2D.isKinematic = false;
-
+                    objectPosses.Rigidbody2D.AddForce(_directionPush * Time.deltaTime * _powerBaloon);
                 }
             }
         }
     }
-
-    public override void Disable()
-    {
-        _isScrollDrag = false;
-        CurrentSlot?.SetScrollSlot(false);
-        DisableObject();
-        base.Disable();
-    }
-
     public override void Active()
     {
+        _canDrag = false;
         base.Active();
-        _isScrollDrag = true;
-        CurrentSlot.SetScrollSlot(true);
-
     }
+
     public override void DeActive()
     {
+        _canDrag = true;
         base.DeActive();
-        _isScrollDrag = false;
-        CurrentSlot.SetScrollSlot(false);
-        DisableObject();
-
     }
 
     private RaycastHit2D[] Detection(float sizeMulti, Color color)
@@ -117,40 +103,16 @@ public class MagnetItem : Item
         base.Update();
 
         if (IsActive)
-            Execute();
-
-        if (_objectPosses != null)
         {
-            RaycastHit2D[] hits = Detection(_disableSizeMulti, Color.red);
-            bool isInRange = false;
-
-            foreach (var hit in hits)
+            tmp_time += Time.deltaTime;
+            if(tmp_time > _activeTime)
             {
-                if(hit.transform.gameObject == _objectPosses.gameObject)
-                {
-                    isInRange = true;
-                    break;
-                }
-            }
-
-            if (!isInRange)
-            {
-                DisableObject();
+                tmp_time = 0f;
+                DeActive();
                 return;
             }
 
-            Vector3 directionPull = transform.position - _objectPosses.Transform.position;
-
-            _objectPosses.Rigidbody2D.AddForce(directionPull * Time.deltaTime * _powerMagnet);
-        }
-    }
-
-    private void DisableObject()
-    {
-        if(_objectPosses!= null)
-        {
-            _objectPosses.Rigidbody2D.gravityScale = 1f;
-            _objectPosses = null;
+            Execute();
         }
     }
 

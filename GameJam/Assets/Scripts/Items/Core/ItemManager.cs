@@ -10,11 +10,9 @@ public class ItemManager : MonoBehaviour
     private Item _currentItem;
     private bool _canActiveItem;
 
-    private bool _haveEnabledItem;
 
     public void Initialize()
     {
-        _haveEnabledItem = false;
         _canActiveItem = true;
 
         foreach (var item in _items)
@@ -44,7 +42,8 @@ public class ItemManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            EnableNextItem();
+            if (!_currentItem.IsActive)
+                EnableNextItem();
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -57,39 +56,41 @@ public class ItemManager : MonoBehaviour
 
     private void ActiveItem()
     {
-        if (!_haveEnabledItem)
-        {
+        if (!_currentItem.IsActive)
             _currentItem.Active();
-            _haveEnabledItem = true;
-        }
+
         else
-        {
             _currentItem.DeActive();
-            _haveEnabledItem = false;
-        }
     }
 
     private void EnableNextItem()
     {
         bool nextActive = false;
+        Vector3 _nextItemPosition = Vector3.zero;
+        ISlot _nextSlotSet = null;
+
         for (int i = 0; i < _items.Count; i++)
         {
             if (nextActive)
             {
                 _items[i].Enable();
+                _nextSlotSet.OnPlaceDragItem(_items[i], _nextItemPosition);
                 _currentItem = _items[i];
                 return;
             }
 
             if (_items[i].IsEnable)
             {
+                _nextItemPosition = _items[i].transform.position;
+                _nextSlotSet = _items[i].CurrentSlot;
+
                 _items[i].Disable();
-                _haveEnabledItem = false;
                 nextActive = true;
             }
         }
 
         _items[0].Enable();
+        _nextSlotSet.OnPlaceDragItem(_items[0], _nextItemPosition);
         _currentItem = _items[0];
 
     }

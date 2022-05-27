@@ -8,15 +8,21 @@ public class DragItem : MonoBehaviour, IDragable
 
     private ISlot _currentSlot;
     protected bool _isScrollDrag;
+    protected bool _canDrag;
 
     private bool _isReturnPosition;
     private Vector3 _returnPosition;
     private DirectionType _directionType;
 
     public bool IsScrollDrag => _isScrollDrag;
+    public bool CanDrag => _canDrag;
     public DirectionType DirectionType => _directionType;
-
     public ISlot CurrentSlot => _currentSlot;
+
+    public virtual void Initialize()
+    {
+        _canDrag = true;
+    }
 
     private void Start()
     {

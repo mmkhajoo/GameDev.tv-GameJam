@@ -42,7 +42,6 @@ public class DragManager : MonoBehaviour, IDragManager
                 foreach (var drag in _dragItems)
                 {
                     slot.OnPlaceDragItem(drag, drag.transform.position);
-                    drag.OnInvalidePlacement();
                 }
             }
         }
@@ -85,6 +84,10 @@ public class DragManager : MonoBehaviour, IDragManager
             {
                 if (item.TryGetComponent<IDragable>(out IDragable drag))
                 {
+
+                    if (!drag.CanDrag)
+                        return;
+
                     _selectedDragble = (DragItem)drag;
 
                     OnDrag?.Invoke();
