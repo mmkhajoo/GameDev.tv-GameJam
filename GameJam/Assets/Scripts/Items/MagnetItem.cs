@@ -6,26 +6,34 @@ using UnityEngine;
 
 public class MagnetItem : Item
 {
+    [Header("Detect Variables")]
     [SerializeField]
     private float _distanceDetection;
     [SerializeField]
     private float _detectionSizeMulti;
+    [SerializeField]
+    private float _disableSizeMulti;
+
+    [Header("Magnet Stats")]
+    [SerializeField]
+    private float _powerMagnet;
 
     private Rigidbody2D objectRigidBoody;
     private BoxCollider2D _collider;
-    private Color _rayColor;
     private Vector2 _directionDetect;
+    private ObjectController _objectPosses;
 
 
     public override void Initialize()
     {
+        base.Initialize();
+
         _collider = GetComponent<BoxCollider2D>();
-        _rayColor = Color.green;
     }
 
     public override void Execute()
     {
-        RaycastHit2D[] hits = Detection();
+        RaycastHit2D[] hits = Detection(_detectionSizeMulti, Color.green);
 
         foreach (var hit in hits)
         {
@@ -33,13 +41,42 @@ public class MagnetItem : Item
             {
                 if (objectPosses.ObjectType == ObjectType.Metal /* && objectPosses.IsEnable */)
                 {
+                    _objectPosses = objectPosses;
+
+                    _objectPosses.Rigidbody2D.gravityScale = 0f;
+
+                    _objectPosses.Rigidbody2D.isKinematic = false;
 
                 }
             }
         }
     }
 
-    private RaycastHit2D[] Detection()
+    public override void Disable()
+    {
+        _isScrollDrag = false;
+        CurrentSlot?.SetScrollSlot(false);
+        DisableObject();
+        base.Disable();
+    }
+
+    public override void Active()
+    {
+        base.Active();
+        _isScrollDrag = true;
+        CurrentSlot.SetScrollSlot(true);
+
+    }
+    public override void DeActive()
+    {
+        base.DeActive();
+        _isScrollDrag = false;
+        CurrentSlot.SetScrollSlot(false);
+        DisableObject();
+
+    }
+
+    private RaycastHit2D[] Detection(float sizeMulti, Color color)
     {
         _directionDetect = Vector2.zero;
 
@@ -64,36 +101,57 @@ public class MagnetItem : Item
         }
         if (DirectionType == DirectionType.Down || DirectionType == DirectionType.Up)
         {
-            Debug.DrawRay(_collider.bounds.center + new Vector3(_collider.bounds.extents.x * _detectionSizeMulti, 0), _directionDetect * (_collider.bounds.extents.y + _distanceDetection), _rayColor);
-            Debug.DrawRay(_collider.bounds.center - new Vector3(_collider.bounds.extents.x * _detectionSizeMulti, 0), _directionDetect * (_collider.bounds.extents.y + _distanceDetection), _rayColor);
+            Debug.DrawRay(_collider.bounds.center + new Vector3(_collider.bounds.extents.x * sizeMulti, 0), _directionDetect * (_collider.bounds.extents.y + _distanceDetection), color);
+            Debug.DrawRay(_collider.bounds.center - new Vector3(_collider.bounds.extents.x * sizeMulti, 0), _directionDetect * (_collider.bounds.extents.y + _distanceDetection), color);
         }
         else
         {
-            Debug.DrawRay(_collider.bounds.center + new Vector3(0, _collider.bounds.extents.y * _detectionSizeMulti), _directionDetect * (_collider.bounds.extents.x + _distanceDetection), _rayColor);
-            Debug.DrawRay(_collider.bounds.center - new Vector3(0, _collider.bounds.extents.y * _detectionSizeMulti), _directionDetect * (_collider.bounds.extents.x + _distanceDetection), _rayColor);
+            Debug.DrawRay(_collider.bounds.center + new Vector3(0, _collider.bounds.extents.y * sizeMulti), _directionDetect * (_collider.bounds.extents.x + _distanceDetection), color);
+            Debug.DrawRay(_collider.bounds.center - new Vector3(0, _collider.bounds.extents.y * sizeMulti), _directionDetect * (_collider.bounds.extents.x + _distanceDetection), color);
         }
-        return Physics2D.BoxCastAll(_collider.bounds.center, _collider.bounds.size * _detectionSizeMulti, 0f, _directionDetect, _distanceDetection);
+        return Physics2D.BoxCastAll(_collider.bounds.center, _collider.bounds.size * sizeMulti, 0f, _directionDetect, _distanceDetection);
     }
 
-    public override void Disable()
+    protected override void Update()
     {
-        _isScrollDrag = false;
-        CurrentSlot?.SetScrollSlot(false);
-        base.Disable();
+        base.Update();
+
+        if (IsActive)
+            Execute();
+
+        if (_objectPosses != null)
+        {
+            RaycastHit2D[] hits = Detection(_disableSizeMulti, Color.red);
+            bool isInRange = false;
+
+            foreach (var hit in hits)
+            {
+                if(hit.transform.gameObject == _objectPosses.gameObject)
+                {
+                    isInRange = true;
+                    break;
+                }
+            }
+
+            if (!isInRange)
+            {
+                DisableObject();
+                return;
+            }
+
+            Vector3 directionPull = transform.position - _objectPosses.Transform.position;
+
+            _objectPosses.Rigidbody2D.AddForce(directionPull * Time.deltaTime * _powerMagnet);
+        }
     }
 
-    public override void Active()
+    private void DisableObject()
     {
-        base.Active();
-        _isScrollDrag = true;
-        CurrentSlot.SetScrollSlot(true);
-    }
-    public override void DeActive()
-    {
-        base.DeActive();
-        _isScrollDrag = false;
-        CurrentSlot.SetScrollSlot(false);
-
+        if(_objectPosses!= null)
+        {
+            _objectPosses.Rigidbody2D.gravityScale = 1f;
+            _objectPosses = null;
+        }
     }
 
 }

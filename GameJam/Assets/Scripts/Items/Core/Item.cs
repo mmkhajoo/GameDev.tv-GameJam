@@ -16,7 +16,6 @@ namespace Items
 
         public bool IsEnable => _isEnable;
 
-        public abstract void Initialize();
         public abstract void Execute();
 
         public virtual void Enable()
@@ -40,15 +39,6 @@ namespace Items
         public virtual void DeActive()
         {
             _isActive = false;
-        }
-
-
-        protected override void Update()
-        {
-            base.Update();
-
-            if (IsActive)
-                Execute();
         }
     }
 }

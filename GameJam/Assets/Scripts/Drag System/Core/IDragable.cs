@@ -6,6 +6,8 @@ public interface IDragable
 {
     bool IsScrollDrag { get; }
 
+    bool CanDrag { get; }
+
     ISlot CurrentSlot { get; }
 
     DirectionType DirectionType { get; }
