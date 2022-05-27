@@ -8,6 +8,8 @@ namespace Items
 
         bool IsActive { get; }
 
+        bool IsEnable { get; }
+
         void Active();
 
         void DeActive();

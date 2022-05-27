@@ -5,7 +5,5 @@
         None = 0,
         Forceable = 1,
         Metal = 2,
-        
-        
     }
 }
