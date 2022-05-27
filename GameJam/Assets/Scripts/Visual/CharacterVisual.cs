@@ -6,7 +6,8 @@ public class CharacterVisual : MonoBehaviour
 {
    [SerializeField] private Animator animator;
    
-   [SerializeField] private GameObject characterGameObject;
+   [SerializeField] private GameObject characterSpriteGameObject;
+   [SerializeField] private GameObject trailGameObject;
    
    [SerializeField] private GameObject jumpParticle;
    [SerializeField] private GameObject moveParticle;
@@ -103,10 +104,13 @@ public class CharacterVisual : MonoBehaviour
    
    private void DoDie()
    {
-      characterGameObject.SetActive(false);
+      characterSpriteGameObject.SetActive(false);
       
       dieParticle.SetActive(false);
       dieParticle.SetActive(true);
+      
+      characterSpriteGameObject.SetActive(false);
+      trailGameObject.SetActive(false);
    }
    
    private void DoDash()

@@ -1245,7 +1245,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 684632145980615307}
-  characterGameObject: {fileID: 6332289626292334975}
+  characterSpriteGameObject: {fileID: 2744467680743461419}
+  trailGameObject: {fileID: 7390841080575550278}
   jumpParticle: {fileID: 3364785861287601365}
   moveParticle: {fileID: 151128062346331861}
   landParticle: {fileID: 5543613925459593329}
@@ -1254,11 +1255,6 @@ MonoBehaviour:
 --- !u!4 &6332289625725778741 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1813503968741676673, guid: 829e1437e0375ae4da0718141966f49f, type: 3}
-  m_PrefabInstance: {fileID: 5677371845618003380}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6332289626292334975 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1813503969248861387, guid: 829e1437e0375ae4da0718141966f49f, type: 3}
   m_PrefabInstance: {fileID: 5677371845618003380}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7541317966317826408
@@ -1326,6 +1322,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c548861b3d2106478413ead68def7de, type: 3}
+--- !u!1 &7390841080575550278 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1025042194713858606, guid: 4c548861b3d2106478413ead68def7de, type: 3}
+  m_PrefabInstance: {fileID: 7541317966317826408}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7541317967430540697
 PrefabInstance:
   m_ObjectHideFlags: 0
