@@ -21,7 +21,6 @@ namespace Objects
 
         #endregion
 
-
         [SerializeField] private ObjectType _objectType;
 
         [Header("Win Transition Time")] [SerializeField]
@@ -85,7 +84,7 @@ namespace Objects
 
         #endregion
 
-        private void OnCollisionEnter(Collision collision)
+        void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.collider.CompareTag("Deadly"))
             {
