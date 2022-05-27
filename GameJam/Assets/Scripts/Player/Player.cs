@@ -9,17 +9,29 @@ namespace DefaultNamespace
 
         [Header("Transition Configs")]
         
-        [SerializeField]private float _searchObjectRadius;
-        
+        [SerializeField]private float _searchObjectRadius = 1f;
+
+        [SerializeField] private float _transitionTime = 0.5f;
         
         #region Fields
-
-        private PlayerMovement _playerMovement;
-
-        private IObject _objectTransitionedTo;
+        
+        private ObjectController _objectTransitionedTo;
         
         private PlayerStateType _currentPlayerStateType = PlayerStateType.None;
 
+        #endregion
+
+        #region Controllers
+
+        private PlayerMovement _playerMovement;
+        private CharacterController2D _characterController2D;
+        private GravityController _gravityController;
+        private DashController _dashController;
+        private ConstantForce2D _constantForce2D;
+        private BoxCollider2D _boxCollider2D;
+        private CircleCollider2D _circleCollider2D;
+        private Rigidbody2D _rigidbody2D;
+        
         #endregion
 
         #region Events
@@ -33,10 +45,19 @@ namespace DefaultNamespace
         private bool isPlayerMoving => _playerMovement.VerticalMove != 0f || _playerMovement.HorizontalMove != 0f;
 
         #endregion
+
+        private bool _isTransitioning;
         
         private void Awake()
         {
             _playerMovement = GetComponent<PlayerMovement>();
+            _characterController2D = GetComponent<CharacterController2D>();
+            _gravityController = GetComponent<GravityController>();
+            _dashController = GetComponent<DashController>();
+            _constantForce2D = GetComponent<ConstantForce2D>();
+            _boxCollider2D = GetComponent<BoxCollider2D>();
+            _circleCollider2D = GetComponent<CircleCollider2D>();
+            _rigidbody2D = GetComponent<Rigidbody2D>();
 
             _playerMovement.OnJump += () => { OnPlayerJumped?.Invoke(); };
         }
@@ -53,15 +74,17 @@ namespace DefaultNamespace
                 SetPlayerState(PlayerStateType.Idle);
             }
 
-            if (Input.GetKeyDown(KeyCode.E) && _objectTransitionedTo != null)
+            if (Input.GetKeyDown(KeyCode.E) && !_isTransitioning)
             {
-                CheckTransitionObjects();
+                if (_objectTransitionedTo == null)
+                {
+                    CheckTransitionObjects();
+                }
+                else
+                {
+                    GetOutFromItem();
+                }
             }
-            else
-            {
-                //TODO : Get Out From Object.
-            }
-            
         }
         private void SetPlayerState(PlayerStateType playerStateType)
         {
@@ -75,11 +98,26 @@ namespace DefaultNamespace
         public void Enable()
         {
             _playerMovement.enabled = true;
+            _characterController2D.enabled = true;
+            _boxCollider2D.isTrigger = false;
+            _circleCollider2D.isTrigger = false;
+            _constantForce2D.enabled = true;
+            _gravityController.enabled = true;
+            _dashController.enabled = true;
+            
         }
 
         public void Disable()
         {
+            _rigidbody2D.velocity = Vector2.zero;
+
             _playerMovement.enabled = false;
+            _characterController2D.enabled = false;
+            _boxCollider2D.isTrigger = true;
+            _circleCollider2D.isTrigger = true;
+            _constantForce2D.enabled = false;
+            _gravityController.enabled = false;
+            _dashController.enabled = false;
         }
         
         private void CheckTransitionObjects()
@@ -100,7 +138,7 @@ namespace DefaultNamespace
                    {
                        var distance = Vector3.Distance(transform.position, objectController.transform.position);
                        
-                       if (distance < minDistance)
+                       if (distance < minDistance && objectController.ObjectFeatureType == ObjectFeatureType.Transitionable)
                        {
                            selectedObjectController = objectController;
                            minDistance = distance;
@@ -118,18 +156,40 @@ namespace DefaultNamespace
         public void Transition(ObjectController transitableObject)
         {
             _objectTransitionedTo = transitableObject;
-            
-            
-            
-            
 
-            //TODO : Set Item Function For Transition.
-            //TODO : Set Player Game Object Child of The Item;
+            _isTransitioning = true;
+
+            LeanTween.move(gameObject, transitableObject.transform, _transitionTime);
+            LeanTween.scale(gameObject, Vector3.zero, _transitionTime).setOnComplete(OnTransitionCompleted);
+        }
+
+        private void OnTransitionCompleted()
+        {
+            Disable();
+
+            _isTransitioning = false;
+            
+            _objectTransitionedTo.SetPlayer(this);
         }
 
         public void GetOutFromItem()
         {
-            Enable();
+            var playerHeightPlusHalfOfObjectHeight = _boxCollider2D.size.y + _circleCollider2D.radius + _objectTransitionedTo.Collider2D.bounds.size.y/2;
+            
+            var targetPosition = _objectTransitionedTo.Transform.position - Vector3.down * playerHeightPlusHalfOfObjectHeight;
+            
+            _isTransitioning = true;
+
+            LeanTween.move(gameObject, targetPosition, _transitionTime);
+            LeanTween.scale(gameObject, Vector3.one, _transitionTime).setOnComplete(() =>
+            {
+                Enable();
+
+                _isTransitioning = false;
+                
+                _objectTransitionedTo.PlayerGotOut();
+                _objectTransitionedTo = null;
+            });
             
             //TODO : Set Player Position Base On where Object was
         }
