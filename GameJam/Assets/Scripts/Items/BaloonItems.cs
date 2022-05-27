@@ -4,14 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MagnetItem : Item
+public class BaloonItems : Item
 {
     [SerializeField]
     private float _distanceDetection;
     [SerializeField]
     private float _detectionSizeMulti;
 
-    private Rigidbody2D objectRigidBoody;
     private BoxCollider2D _collider;
     private Color _rayColor;
     private Vector2 _directionDetect;
@@ -72,28 +71,7 @@ public class MagnetItem : Item
             Debug.DrawRay(_collider.bounds.center + new Vector3(0, _collider.bounds.extents.y * _detectionSizeMulti), _directionDetect * (_collider.bounds.extents.x + _distanceDetection), _rayColor);
             Debug.DrawRay(_collider.bounds.center - new Vector3(0, _collider.bounds.extents.y * _detectionSizeMulti), _directionDetect * (_collider.bounds.extents.x + _distanceDetection), _rayColor);
         }
+
         return Physics2D.BoxCastAll(_collider.bounds.center, _collider.bounds.size * _detectionSizeMulti, 0f, _directionDetect, _distanceDetection);
     }
-
-    public override void Disable()
-    {
-        _isScrollDrag = false;
-        CurrentSlot?.SetScrollSlot(false);
-        base.Disable();
-    }
-
-    public override void Active()
-    {
-        base.Active();
-        _isScrollDrag = true;
-        CurrentSlot.SetScrollSlot(true);
-    }
-    public override void DeActive()
-    {
-        base.DeActive();
-        _isScrollDrag = false;
-        CurrentSlot.SetScrollSlot(false);
-
-    }
-
 }

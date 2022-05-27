@@ -4,6 +4,6 @@
     {
         None = 0,
         Magnet =1,
-        Chips =2,
+        Baloons =2,
     }
 }
