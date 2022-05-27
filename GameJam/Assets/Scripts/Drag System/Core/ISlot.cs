@@ -4,9 +4,9 @@ using UnityEngine;
 
 public interface ISlot 
 {
-    float MaxPos { get; }
+    Transform MaxPos { get; }
 
-    float MinPos { get; }
+    Transform MinPos { get; }
 
     DirectionType DirectionType { get; }
 

@@ -12,9 +12,9 @@ public class VerticalSlotItem : SlotItem
 
     [Header("Position Offset")]
     [SerializeField]
-    private float _maxPos;
+    private Transform _maxPos;
     [SerializeField]
-    private float _minPos;
+    private Transform _minPos;
 
     #endregion
 
@@ -22,9 +22,9 @@ public class VerticalSlotItem : SlotItem
 
     public override DirectionType DirectionType => _directionType;
 
-    public override float MaxPos => _maxPos;
+    public override Transform MaxPos => _maxPos;
 
-    public override float MinPos => _minPos;
+    public override Transform MinPos => _minPos;
 
     #endregion
 
@@ -34,11 +34,11 @@ public class VerticalSlotItem : SlotItem
     {
         Vector2 setPosition = Vector2.zero;
 
-        if (inputPosition.y > MaxPos)
-            setPosition = new Vector2(transform.position.x, MaxPos);
+        if (inputPosition.y > MaxPos.position.y)
+            setPosition = new Vector2(transform.position.x, MaxPos.position.y);
 
-        else if (inputPosition.y < MinPos)
-            setPosition = new Vector2(transform.position.x, MinPos);
+        else if (inputPosition.y < MinPos.position.y)
+            setPosition = new Vector2(transform.position.x, MinPos.position.y);
 
         else
             setPosition = new Vector2(transform.position.x, inputPosition.y);
@@ -52,11 +52,11 @@ public class VerticalSlotItem : SlotItem
 
         Vector2 setPosition = Vector2.zero;
 
-        if (dragPosition.y > MaxPos)
-            setPosition = new Vector2(transform.position.x, MaxPos);
+        if (dragPosition.y > MaxPos.position.y)
+            setPosition = new Vector2(transform.position.x, MaxPos.position.y);
 
-        else if (dragPosition.y < MinPos)
-            setPosition = new Vector2(transform.position.x, MinPos);
+        else if (dragPosition.y < MinPos.position.y)
+            setPosition = new Vector2(transform.position.x, MinPos.position.y);
 
         else
             setPosition = new Vector2(transform.position.x, dragPosition.y);
