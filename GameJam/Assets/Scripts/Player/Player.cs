@@ -35,10 +35,12 @@ namespace DefaultNamespace
         #endregion
 
         #region Events
-        [Header("Events")]
-        [SerializeField]public PlayerStateEvent _onPlayerStateChanged;
-        [SerializeField]public UnityEvent OnPlayerLand;
-        [SerializeField]public UnityEvent OnPlayerJumped;
+
+        [Header("Events")] [SerializeField] private PlayerStateEvent _onPlayerStateChanged;
+        [SerializeField] private UnityEvent OnPlayerLand;
+        [SerializeField] private UnityEvent OnPlayerJumped;
+        [SerializeField] private UnityEvent OnTransitioned;
+        [SerializeField] private UnityEvent OnPlayerGotOut;
 
         #endregion
 
@@ -62,7 +64,7 @@ namespace DefaultNamespace
             _rigidbody2D = GetComponent<Rigidbody2D>();
 
             _playerMovement.OnJump += () => { OnPlayerJumped?.Invoke(); };
-            _playerMovement.OnLand += () => {OnPlayerLand?.Invoke(); };
+            _playerMovement.OnLand += () => { OnPlayerLand?.Invoke(); };
         }
 
         private void Update()
@@ -161,8 +163,6 @@ namespace DefaultNamespace
 
             _isTransitioning = true;
 
-            _objectTransitionedTo.Rigidbody2D.isKinematic = true;
-
             LeanTween.move(gameObject, transitableObject.transform, _transitionTime);
             LeanTween.scale(gameObject, Vector3.zero, _transitionTime).setOnComplete(OnTransitionCompleted);
         }
@@ -174,6 +174,8 @@ namespace DefaultNamespace
             _isTransitioning = false;
 
             _objectTransitionedTo.SetPlayer(this);
+            
+            OnTransitioned?.Invoke();
         }
 
         public void GetOutFromItem()
@@ -192,15 +194,17 @@ namespace DefaultNamespace
 
                 _objectTransitionedTo.PlayerGotOut();
                 _objectTransitionedTo = null;
-                
+
                 _gravityController.SetGravity(false);
+                
+                OnPlayerGotOut?.Invoke();
             });
         }
 
         public void Die()
         {
             Disable();
-            
+
             //TODO : Play Die Animation;
 
             GameManager.instance.LoseGame();
@@ -220,10 +224,9 @@ namespace DefaultNamespace
             }
         }
     }
-    
+
     [Serializable]
     public class PlayerStateEvent : UnityEvent<PlayerStateType>
     {
     }
-
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,7 +20,7 @@ public class DashController : MonoBehaviour
     [SerializeField] private float _dashDistance;
     [SerializeField] private float _dashTime;
 
-    private float _forceValue;
+    private Vector3 _startedPosition;
     private Vector3 _targetPosition;
     private IEnumerable<DirectionType> _directionTypes;
 
@@ -43,13 +44,7 @@ public class DashController : MonoBehaviour
 
         _directionTypes = Enum.GetValues(typeof(DirectionType)).Cast<DirectionType>();
     }
-
-    private void Start()
-    {
-        _forceValue = _dashDistance / _dashTime;
-    }
-
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -57,12 +52,17 @@ public class DashController : MonoBehaviour
         {
             if (CanDash())
             {
-                _counter = Time.time;
+                _counter = 0;
                 Dash();
             }
         }
 
-        if (Time.time - _counter > _dashTime && _dashClicked)
+        if (_dashClicked)
+        {
+            _counter += Time.deltaTime;
+        }
+
+        if (_counter > _dashTime && _dashClicked)
         {
             _dashClicked = false;
             
@@ -71,18 +71,18 @@ public class DashController : MonoBehaviour
 
             _constantForce2D.enabled = true;
         }
+
+        Debug.DrawLine(_startedPosition, _targetPosition, Color.red);
     }
 
     private void Dash()
     {
         _constantForce2D.enabled = false;
         
-        var force = _playerMovement.Direction * _forceValue;
-        
         _boxCollider2D.isTrigger = true;
         _circleCollider2D.isTrigger = true;
 
-        _rigidbody2D.velocity = force;
+        _rigidbody2D.DOMove(_targetPosition, _dashTime);
         
         _dashClicked = true;
         
@@ -112,6 +112,7 @@ public class DashController : MonoBehaviour
                 return false;
         }
 
+        _startedPosition = transform.position;
         _targetPosition = targetPosition;
 
         return true;
