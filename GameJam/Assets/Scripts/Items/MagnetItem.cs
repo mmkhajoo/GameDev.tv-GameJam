@@ -39,13 +39,11 @@ public class MagnetItem : Item
         {
             if (hit.transform.TryGetComponent<ObjectController>(out ObjectController objectPosses))
             {
-                if (objectPosses.ObjectType == ObjectType.Metal /* && objectPosses.IsEnable */)
+                if (objectPosses.ObjectType == ObjectType.Metal && objectPosses.IsEnable )
                 {
                     _objectPosses = objectPosses;
 
                     _objectPosses.Rigidbody2D.gravityScale = 0f;
-
-                    _objectPosses.Rigidbody2D.isKinematic = false;
 
                 }
             }

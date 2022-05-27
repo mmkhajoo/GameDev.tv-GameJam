@@ -39,10 +39,8 @@ public class BaloonItems : Item
         {
             if (hit.transform.TryGetComponent<ObjectController>(out ObjectController objectPosses))
             {
-                if (objectPosses.ObjectType == ObjectType.Forceable /* && objectPosses.IsEnable */)
+                if (objectPosses.ObjectType == ObjectType.Forceable  && objectPosses.IsEnable )
                 {
-                    objectPosses.Rigidbody2D.isKinematic = false;
-
                     Vector2 _directionPush = objectPosses.transform.position - transform.position;
 
                     objectPosses.Rigidbody2D.AddForce(_directionPush * Time.deltaTime * _powerBaloon);
