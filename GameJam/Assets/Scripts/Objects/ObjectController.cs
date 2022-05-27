@@ -2,6 +2,7 @@
 using DefaultNamespace;
 using Managers;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Objects
 {
@@ -41,8 +42,6 @@ namespace Objects
         {
             _player = player;
 
-            _rigidbody2D.isKinematic = false;
-
             Enable();
 
             //TODO : Maybe Enable Item Somewhere Else.
@@ -55,12 +54,17 @@ namespace Objects
             Disable();
         }
 
-        public void Destroy()
+        public void Destroy(bool isDestroySelf)
         {
-            //TODO : Destroy Object Self.
 
             if (_player != null)
                 _player.Die();
+
+            if (isDestroySelf)
+            {
+                // Destroy Animation
+                UnityEngine.Object.Destroy(gameObject);
+            }
         }
 
         #region Private Methods
@@ -85,7 +89,7 @@ namespace Objects
         {
             if (collision.collider.CompareTag("Deadly"))
             {
-                Destroy();
+                Destroy(true);
             }
 
             if (collision.collider.CompareTag("Win"))

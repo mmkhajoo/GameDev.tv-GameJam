@@ -18,6 +18,6 @@ namespace Objects
 
         void PlayerGotOut();
         
-        void Destroy();
+        void Destroy(bool isDestroySelf);
     }
 }

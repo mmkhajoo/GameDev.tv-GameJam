@@ -161,8 +161,6 @@ namespace DefaultNamespace
 
             _isTransitioning = true;
 
-            _objectTransitionedTo.Rigidbody2D.isKinematic = true;
-
             LeanTween.move(gameObject, transitableObject.transform, _transitionTime);
             LeanTween.scale(gameObject, Vector3.zero, _transitionTime).setOnComplete(OnTransitionCompleted);
         }
