@@ -68,16 +68,21 @@ namespace DefaultNamespace
 
             SetGravity();
         }
-
+        
         public void SetGravity(bool isCheckingGround = true)
         {
             if (_previousDirectionType == _currentDirectionType)
                 return;
             
-            // if(!_playerMovement.IsGrounded && isCheckingGround)
-            //     return;
-
-            switch (_currentDirectionType)
+            if(!_playerMovement.IsGrounded && isCheckingGround)
+                return;
+            
+            SetGravity(_currentDirectionType);
+        }
+        
+        public void SetGravity(DirectionType directionType)
+        {
+            switch (directionType)
             {
                 case DirectionType.Up:
                     
@@ -109,5 +114,6 @@ namespace DefaultNamespace
                     throw new ArgumentOutOfRangeException();
             }
         }
+
     }
 }
