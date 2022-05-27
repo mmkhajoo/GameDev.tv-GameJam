@@ -356,7 +356,7 @@ ConstantForce2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1813503968741676677}
   m_Enabled: 1
-  m_Force: {x: -30, y: 0}
+  m_Force: {x: 0, y: -30}
   m_RelativeForce: {x: 0, y: 0}
   m_Torque: 0
 --- !u!114 &1889926375
