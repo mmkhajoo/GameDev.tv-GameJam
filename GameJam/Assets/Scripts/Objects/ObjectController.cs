@@ -32,6 +32,7 @@ namespace Objects
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _collider2D = GetComponent<Collider2D>();
+            
             Disable();
         }
 
