@@ -28,7 +28,9 @@ public class DashController : MonoBehaviour
     private float _counter;
     private bool _dashClicked;
 
-    [Header("Event")] [SerializeField]private UnityEvent _onDash;
+    [Header("Event")] [SerializeField] private UnityEvent _onDash;
+
+    [SerializeField] private LayerMask _dashableMask; 
 
     private void Awake()
     {
@@ -44,7 +46,7 @@ public class DashController : MonoBehaviour
 
         _directionTypes = Enum.GetValues(typeof(DirectionType)).Cast<DirectionType>();
     }
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -65,7 +67,7 @@ public class DashController : MonoBehaviour
         if (_counter > _dashTime && _dashClicked)
         {
             _dashClicked = false;
-            
+
             _boxCollider2D.isTrigger = false;
             _circleCollider2D.isTrigger = false;
 
@@ -78,14 +80,14 @@ public class DashController : MonoBehaviour
     private void Dash()
     {
         _constantForce2D.enabled = false;
-        
+
         _boxCollider2D.isTrigger = true;
         _circleCollider2D.isTrigger = true;
 
         _rigidbody2D.DOMove(_targetPosition, _dashTime);
-        
+
         _dashClicked = true;
-        
+
         _onDash?.Invoke();
     }
 
@@ -93,11 +95,20 @@ public class DashController : MonoBehaviour
     {
         var targetPosition = transform.position + _playerMovement.Direction * _dashDistance;
 
-        Debug.Log(targetPosition);
+        RaycastHit2D dashableRaycastHit2D =
+            Physics2D.Raycast(transform.position, _playerMovement.Direction, _dashDistance,_dashableMask);
 
+        if (dashableRaycastHit2D.collider != null)
+        {
+            if (!dashableRaycastHit2D.collider.CompareTag("Dashable"))
+            {
+                return false;
+            }
+        }
+        
         RaycastHit2D rightHit =
-            Physics2D.Raycast(targetPosition + _playerMovement.Direction * _boxCollider2D.size.x/2, Vector2.zero);
-        RaycastHit2D leftHit = Physics2D.Raycast(targetPosition - _playerMovement.Direction * _boxCollider2D.size.x/2,
+            Physics2D.Raycast(targetPosition + _playerMovement.Direction * _boxCollider2D.size.x / 2, Vector2.zero);
+        RaycastHit2D leftHit = Physics2D.Raycast(targetPosition - _playerMovement.Direction * _boxCollider2D.size.x / 2,
             Vector2.zero);
 
         if (rightHit.collider != null || leftHit.collider != null)

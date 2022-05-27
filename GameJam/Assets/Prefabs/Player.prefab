@@ -391,6 +391,9 @@ MonoBehaviour:
   _onDash:
     m_PersistentCalls:
       m_Calls: []
+  _dashableMask:
+    serializedVersion: 2
+    m_Bits: 439
 --- !u!114 &7678688206059300536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,6 +415,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnPlayerJumped:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTransitioned:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerGotOut:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1813503969248861387

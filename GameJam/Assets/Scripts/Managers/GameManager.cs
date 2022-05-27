@@ -7,8 +7,6 @@ namespace Managers
     {
         public static GameManager instance;
 
-        public Transform playerDefaultParent;
-
         private void Awake()
         {
             if (instance == null)
@@ -17,11 +15,15 @@ namespace Managers
 
         public void LoseGame()
         {
+            Debug.Log("You Lost Game.");
+            
             //TODO : Show the Lose Panel;
         }
 
         public void WinGame()
         {
+            Debug.Log("You Won Game");
+            
             //TODO : Show the Win Panel;
         }
 

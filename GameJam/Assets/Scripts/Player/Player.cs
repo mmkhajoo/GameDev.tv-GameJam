@@ -1,6 +1,7 @@
 ﻿using System;
 using Managers;
 using Objects;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -204,14 +205,18 @@ namespace DefaultNamespace
         public void Die()
         {
             Disable();
+            
+            SetPlayerState(PlayerStateType.Die);
 
             //TODO : Play Die Animation;
 
             GameManager.instance.LoseGame();
         }
-
-        private void OnCollisionEnter(Collision collision)
+        
+        void OnCollisionEnter2D(Collision2D collision)
         {
+            Debug.Log("Collision Called.");
+            
             if (collision.collider.CompareTag("Deadly"))
             {
                 Die();
@@ -219,6 +224,8 @@ namespace DefaultNamespace
 
             if (collision.collider.CompareTag("Win"))
             {
+                Disable();
+                
                 LeanTween.move(gameObject, collision.collider.transform, _transitionTime);
                 LeanTween.scale(gameObject, Vector3.zero, _transitionTime).setOnComplete(GameManager.instance.WinGame);
             }
