@@ -189,6 +189,8 @@ namespace DefaultNamespace
 
                 _objectTransitionedTo.PlayerGotOut();
                 _objectTransitionedTo = null;
+                
+                _gravityController.SetGravity(false);
             });
         }
 
