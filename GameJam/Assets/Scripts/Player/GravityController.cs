@@ -64,11 +64,8 @@ namespace DefaultNamespace
             }
         }
         
-        public void SetGravity(bool isCheckingGround = true)
+        public void SetGravity()
         {
-            if(_playerMovement.IsGrounded && isCheckingGround)
-                return;
-            
             SetGravity(_currentDirectionType);
         }
         

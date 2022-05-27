@@ -108,7 +108,6 @@ namespace DefaultNamespace
             _boxCollider2D.isTrigger = false;
             _circleCollider2D.isTrigger = false;
             _constantForce2D.enabled = true;
-            _gravityController.enabled = true;
             _dashController.enabled = true;
         }
 
@@ -121,7 +120,6 @@ namespace DefaultNamespace
             _boxCollider2D.isTrigger = true;
             _circleCollider2D.isTrigger = true;
             _constantForce2D.enabled = false;
-            _gravityController.enabled = false;
             _dashController.enabled = false;
         }
 
@@ -180,6 +178,8 @@ namespace DefaultNamespace
 
         public void GetOutFromItem()
         {
+            transform.position = _objectTransitionedTo.Transform.position;
+            
             var targetPosition = _objectTransitionedTo.Transform.position + Vector3.down * 0.1f;
 
             _isTransitioning = true;
@@ -195,7 +195,7 @@ namespace DefaultNamespace
                 _objectTransitionedTo.PlayerGotOut();
                 _objectTransitionedTo = null;
 
-                _gravityController.SetGravity(false);
+                _gravityController.SetGravity();
                 
                 OnPlayerGotOut?.Invoke();
             });
