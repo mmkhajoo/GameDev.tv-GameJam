@@ -33,8 +33,8 @@ namespace Objects
         [SerializeField] private UnityEvent OnPlayerGotOut;
         #endregion
         
-        private Collider2D _collider2D;
-        private Rigidbody2D _rigidbody2D;
+        protected Collider2D _collider2D;
+        protected Rigidbody2D _rigidbody2D;
 
        
         private void Awake()
