@@ -1311,7 +1311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 107756083}
-  characterSpriteGameObject: {fileID: 0}
+  characterSpriteGameObject: {fileID: 107756080}
   trailGameObject: {fileID: 7390841080575550278}
   jumpParticle: {fileID: 3364785861287601365}
   moveParticle: {fileID: 151128062346331861}
