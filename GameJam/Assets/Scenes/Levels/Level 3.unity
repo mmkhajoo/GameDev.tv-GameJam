@@ -606,7 +606,7 @@ PrefabInstance:
     - target: {fileID: 1614601567561671610, guid: 548ae6795e077d0448b7698c68f56b1a, type: 3}
       propertyPath: OnButtonActive.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1575475828}
+      objectReference: {fileID: 1697463154}
     - target: {fileID: 1614601567561671610, guid: 548ae6795e077d0448b7698c68f56b1a, type: 3}
       propertyPath: OnButtonActive.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -8883,6 +8883,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2191045796212814160, guid: d3426f3960d668a43a0af48d58861d63, type: 3}
+      propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4306415745989603505, guid: d3426f3960d668a43a0af48d58861d63, type: 3}
       propertyPath: m_RootOrder
       value: 18
@@ -11825,11 +11829,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &1575475828 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 4306415744893113740, guid: d3426f3960d668a43a0af48d58861d63, type: 3}
-  m_PrefabInstance: {fileID: 1046916692}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1577051271
 GameObject:
   m_ObjectHideFlags: 0
@@ -12113,6 +12112,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &1697463154 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 2191045796212814160, guid: d3426f3960d668a43a0af48d58861d63, type: 3}
+  m_PrefabInstance: {fileID: 1046916692}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1715973256
 GameObject:
   m_ObjectHideFlags: 0
