@@ -16,6 +16,11 @@ namespace Managers
                 instance = this;
             
             DontDestroyOnLoad(gameObject);
+
+            if (!PlayerPrefs.HasKey("Level"))
+            {
+                PlayerPrefs.SetInt("Level",1);
+            }
             
             LoadLevel();
         }
