@@ -10,19 +10,31 @@ namespace Managers
 
         [SerializeField] private GameObject _panel;
 
+        public int CurrentLevel => PlayerPrefs.GetInt("Level", 1);
+
+
+        private const String Level = "Level";
+
+        private MapManager _mapManager;
+
         private void Awake()
         {
             if (instance == null)
                 instance = this;
-            
+
             DontDestroyOnLoad(gameObject);
 
             if (!PlayerPrefs.HasKey("Level"))
             {
-                PlayerPrefs.SetInt("Level",1);
+                PlayerPrefs.SetInt("Level", 1);
             }
-            
+
             LoadLevel();
+        }
+
+        private void Start()
+        {
+            _mapManager = GetComponent<MapManager>();
         }
 
         private void Update()
@@ -36,20 +48,64 @@ namespace Managers
         public void LoseGame()
         {
             Debug.Log("You Lost Game.");
-              
-            Invoke("LoadLevel",0.5f);
-            
+
+            if (PlayerPrefs.HasKey("Checkpoint"))
+            {
+                if (PlayerPrefs.HasKey("DeadMan"))
+                {
+                    _mapManager.DeadManGoNextLevel(() =>
+                    {
+                        if(Check_Checkpoint())
+                            return;
+                        
+                        Invoke("LoadLevel", 0.5f);
+                    });
+                }
+                else
+                {
+                    _mapManager.FirstTimeShowMap(() => { Invoke("LoadLevel", 0.5f); });
+                }
+                
+                return;
+            }
+
+            Invoke("LoadLevel", 0.5f);
+
             //TODO : Show the Lose Panel;
+        }
+
+        private bool Check_Checkpoint()
+        {
+            if (PlayerPrefs.GetInt("DeadMan") == CurrentLevel)
+            {
+                _mapManager.ResetToLastCheckPoint();
+                
+                PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Checkpoint"));
+                
+                _mapManager.FirstTimeShowMap(() =>
+                {
+                    Invoke("LoadLevel", 0.5f);
+                });
+                
+                return true;
+            }
+
+            return false;
         }
 
         public void WinGame()
         {
             Debug.Log("You Won Game");
-            
+
+            if (PlayerPrefs.HasKey("Checkpoint"))
+            {
+                _mapManager.PlayerSetPosition();
+            }
+
             IncreaseLevel();
-            
+
             LoadLevel();
-            
+
             //TODO : Show the Win Panel;
         }
 
@@ -61,44 +117,43 @@ namespace Managers
         public void GoToNextLevel()
         {
             IncreaseLevel();
-            
+
             LoadLevel();
         }
 
         public void GoPreviousLevel()
         {
             DecreaseLevel();
-            
+
             LoadLevel();
         }
 
         private void IncreaseLevel()
         {
-            PlayerPrefs.SetInt("Level",PlayerPrefs.GetInt("Level") + 1);
+            PlayerPrefs.SetInt(Level, PlayerPrefs.GetInt(Level) + 1);
         }
 
         private void DecreaseLevel()
         {
-            PlayerPrefs.SetInt("Level",PlayerPrefs.GetInt("Level") - 1);
+            PlayerPrefs.SetInt(Level, PlayerPrefs.GetInt(Level) - 1);
         }
 
         private void LoadLevel()
         {
-            int level = PlayerPrefs.GetInt("Level",1);
+            int level = PlayerPrefs.GetInt(Level, 1);
 
             if (level > 3)
             {
-                PlayerPrefs.SetInt("Level", 3);
+                PlayerPrefs.SetInt(Level, 3);
                 level = 3;
             }
-            else if(level < 1)
+            else if (level < 1)
             {
-                PlayerPrefs.SetInt("Level", 1);
+                PlayerPrefs.SetInt(Level, 1);
                 level = 1;
             }
-            
+
             SceneManager.LoadScene("Level " + level);
         }
-        
     }
 }

@@ -14,14 +14,14 @@ namespace Objects
                 return;
             }
 
-            if (collision.CompareTag("Transitionable"))
-            {
-                if (collision.GetComponent<ObjectController>().IsEnable)
-                {
-                    AddGem();
-                    Destroy(gameObject);
-                }
-            }
+            // if (collision.CompareTag("Transitionable"))
+            // {
+            //     if (collision.GetComponent<ObjectController>().IsEnable)
+            //     {
+            //         AddGem();
+            //         Destroy(gameObject);
+            //     }
+            // }
         }
         
         private void AddGem()
