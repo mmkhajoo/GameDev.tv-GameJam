@@ -2,6 +2,7 @@ using Items;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ItemManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class ItemManager : MonoBehaviour
     private Item _currentItem;
     private bool _canActiveItem;
 
+    public UnityEvent OnSwitchItem;
 
     public void Initialize()
     {
@@ -43,7 +45,10 @@ public class ItemManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (!_currentItem.IsActive)
+            {
                 EnableNextItem();
+                OnSwitchItem?.Invoke();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
