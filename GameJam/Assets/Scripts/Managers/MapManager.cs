@@ -63,6 +63,9 @@ namespace Managers
         
         private void SetPlayerAndDeadManPosition()
         {
+            if(!PlayerPrefs.HasKey("Checkpoint"))
+                return;
+            
             var level = GameManager.instance.CurrentLevel;
             var deadman = PlayerPrefs.GetInt(DeadMan);
 
@@ -73,6 +76,8 @@ namespace Managers
 
         private void ShowMap(Action onMapOpened = null)
         {
+            _panel.SetActive(true);
+            
             _panel.transform.localScale = Vector3.zero;
 
             LeanTween.scale(_panel, Vector3.one, 1f).setOnComplete(onMapOpened);
@@ -80,7 +85,11 @@ namespace Managers
 
         private void CloseMap(Action onMapClosed = null)
         {
-            LeanTween.scale(_panel, Vector3.zero, 1f).setOnComplete(onMapClosed);
+            LeanTween.scale(_panel, Vector3.zero, 1f).setOnComplete(() =>
+            {
+                onMapClosed?.Invoke();
+                _panel.SetActive(false);
+            });
         }
         
         private void MovePlayerAndDeadMan(Action onDone = null)
@@ -95,6 +104,28 @@ namespace Managers
         private void IncreaseDeadManLevel()
         {
             PlayerPrefs.SetInt(DeadMan, PlayerPrefs.GetInt(DeadMan) + 1);
+        }
+
+        private void Update()
+        {
+#if UNITY_EDITOR
+            
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                FirstTimeShowMap();
+            }
+
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                DeadManGoNextLevel();
+            }
+
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                _deadMan.transform.position = _paths[0].transform.position;
+                _player.transform.position = _paths[3].transform.position;
+            }
+#endif
         }
     }
 }

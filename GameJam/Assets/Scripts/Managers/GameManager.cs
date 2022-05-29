@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,8 @@ namespace Managers
         public static GameManager instance;
 
         [SerializeField] private GameObject _panel;
+
+        [SerializeField] private TextMeshProUGUI _gemText;
 
         public int CurrentLevel => PlayerPrefs.GetInt("Level", 1);
 
@@ -39,10 +42,14 @@ namespace Managers
 
         private void Update()
         {
+#if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.BackQuote))
             {
                 _panel.SetActive(!_panel.activeInHierarchy);
             }
+#endif
+            
+            _gemText.SetText(PlayerPrefs.GetInt("Gems").ToString());
         }
 
         public void LoseGame()
@@ -55,9 +62,9 @@ namespace Managers
                 {
                     _mapManager.DeadManGoNextLevel(() =>
                     {
-                        if(Check_Checkpoint())
+                        if (Check_Checkpoint())
                             return;
-                        
+
                         Invoke("LoadLevel", 0.5f);
                     });
                 }
@@ -65,7 +72,7 @@ namespace Managers
                 {
                     _mapManager.FirstTimeShowMap(() => { Invoke("LoadLevel", 0.5f); });
                 }
-                
+
                 return;
             }
 
@@ -79,14 +86,11 @@ namespace Managers
             if (PlayerPrefs.GetInt("DeadMan") == CurrentLevel)
             {
                 _mapManager.ResetToLastCheckPoint();
-                
+
                 PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Checkpoint"));
-                
-                _mapManager.FirstTimeShowMap(() =>
-                {
-                    Invoke("LoadLevel", 0.5f);
-                });
-                
+
+                _mapManager.FirstTimeShowMap(() => { Invoke("LoadLevel", 0.5f); });
+
                 return true;
             }
 
