@@ -7,9 +7,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1403146519, guid: bab389daf775dc54188813d4538e98e9, type: 3}
+      propertyPath: m_ShapeLightFalloffSize
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 4148481005628614025, guid: bab389daf775dc54188813d4538e98e9, type: 3}
       propertyPath: m_Name
       value: MetalBall
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148481005628614028, guid: bab389daf775dc54188813d4538e98e9, type: 3}
+      propertyPath: m_LinearDrag
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4148481005628614030, guid: bab389daf775dc54188813d4538e98e9, type: 3}
       propertyPath: m_Size.x
@@ -124,4 +132,4 @@ MonoBehaviour:
   - {x: -0.2385521, y: -0.5744605, z: 0}
   m_ShapePathHash: -397860793
   m_Mesh: {fileID: 0}
-  m_InstanceId: -383206
+  m_InstanceId: -11492
