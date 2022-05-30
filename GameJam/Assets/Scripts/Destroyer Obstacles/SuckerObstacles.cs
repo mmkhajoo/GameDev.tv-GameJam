@@ -4,6 +4,7 @@ using Objects;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SuckerObstacles : MonoBehaviour, IDestroyerObstacles
 {
@@ -25,7 +26,9 @@ public class SuckerObstacles : MonoBehaviour, IDestroyerObstacles
     private float _suckingSpeed;
     [SerializeField]
     private float _transitionTime;
-
+    [SerializeField]
+    private UnityEvent suckerDisabled;
+        
     private bool _isActive;
     private BoxCollider2D _collider;
 
@@ -46,6 +49,7 @@ public class SuckerObstacles : MonoBehaviour, IDestroyerObstacles
     public void Deactive()
     {
         _isActive = false;
+        suckerDisabled.Invoke();
     }
 
     public void Execute()
