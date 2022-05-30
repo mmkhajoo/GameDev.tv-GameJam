@@ -165,7 +165,7 @@ namespace Managers
             SceneManager.LoadScene("Main Menu");
         }
 
-        private void LoadLevel()
+        public void LoadLevel()
         {
             int level = PlayerPrefs.GetInt(Level, 1);
 
