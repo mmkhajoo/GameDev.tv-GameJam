@@ -17,7 +17,7 @@ namespace Managers
 
         [SerializeField] private GameObject _resetButton;
         [SerializeField] private GameObject _gemPanel;
-        
+
 
         public int CurrentLevel => PlayerPrefs.GetInt("Level", 1);
 
@@ -26,13 +26,13 @@ namespace Managers
 
         private MapManager _mapManager;
 
-        [Header("Gem Events")][SerializeField] private UnityEvent _onGemAdded;
+        [Header("Gem Events")] [SerializeField]
+        private UnityEvent _onGemAdded;
 
         [SerializeField] private UnityEvent _onGedDecreased;
-        
-        
 
-            private void Awake()
+
+        private void Awake()
         {
             if (instance == null)
                 instance = this;
@@ -44,12 +44,14 @@ namespace Managers
                 PlayerPrefs.SetInt("Level", 1);
             }
 
-            LoadLevel();
+            LoadMainMenu();
         }
 
         private void Start()
         {
             _mapManager = GetComponent<MapManager>();
+
+            UpdateGem();
         }
 
         private void Update()
@@ -60,7 +62,6 @@ namespace Managers
                 _panel.SetActive(!_panel.activeInHierarchy);
             }
 #endif
-            
         }
 
         public void LoseGame()
@@ -96,12 +97,12 @@ namespace Managers
         {
             if (PlayerPrefs.GetInt("DeadMan") == CurrentLevel)
             {
-                PlayerPrefs.SetInt("Gems",PlayerPrefs.GetInt("Gems")-1);
-                
-                _gemText.SetText(PlayerPrefs.GetInt("Gems").ToString());
+                PlayerPrefs.SetInt("Gems", PlayerPrefs.GetInt("Gems") - 1);
+
+                UpdateGem();
 
                 _onGedDecreased?.Invoke();
-                
+
                 _mapManager.ResetToLastCheckPoint();
 
                 PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Checkpoint"));
@@ -110,7 +111,7 @@ namespace Managers
 
                 return true;
             }
-            
+
             return false;
         }
 
@@ -159,6 +160,11 @@ namespace Managers
             PlayerPrefs.SetInt(Level, PlayerPrefs.GetInt(Level) - 1);
         }
 
+        private void LoadMainMenu()
+        {
+            SceneManager.LoadScene("Main Menu");
+        }
+
         private void LoadLevel()
         {
             int level = PlayerPrefs.GetInt(Level, 1);
@@ -174,17 +180,17 @@ namespace Managers
                 level = 2;
             }
 
-            if (level >= 3)
+            if (level >= 4)
             {
                 _resetButton.SetActive(true);
                 _gemPanel.SetActive(true);
             }
             else
             {
-                _resetButton.SetActive(true);
-                _gemPanel.SetActive(true);
+                _resetButton.SetActive(false);
+                _gemPanel.SetActive(false);
             }
-            
+
             SceneManager.LoadScene(level);
         }
 
@@ -195,8 +201,13 @@ namespace Managers
             PlayerPrefs.SetInt("Gems", PlayerPrefs.GetInt("Gems", 0) + 1);
 
             _gemText.SetText(PlayerPrefs.GetInt("Gems").ToString());
-            
+
             _onGemAdded?.Invoke();
+        }
+
+        private void UpdateGem()
+        {
+            _gemText.SetText(PlayerPrefs.GetInt("Gems").ToString());
         }
 
         #endregion
