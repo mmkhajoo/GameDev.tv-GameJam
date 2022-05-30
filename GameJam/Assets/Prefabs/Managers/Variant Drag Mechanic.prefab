@@ -260,15 +260,15 @@ PrefabInstance:
       objectReference: {fileID: 5319510607521313274}
     - target: {fileID: 2994230347752700863, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: _activeSlotColor.b
-      value: 1
+      value: 0.63529414
       objectReference: {fileID: 0}
     - target: {fileID: 2994230347752700863, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: _activeSlotColor.g
-      value: 0.76862746
+      value: 0.63529414
       objectReference: {fileID: 0}
     - target: {fileID: 2994230347752700863, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: _activeSlotColor.r
-      value: 0.8039216
+      value: 0.63529414
       objectReference: {fileID: 0}
     - target: {fileID: 2994230347842125925, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: _maxPos
@@ -280,15 +280,15 @@ PrefabInstance:
       objectReference: {fileID: 2335792965317717977}
     - target: {fileID: 2994230347842125925, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: _activeSlotColor.b
-      value: 1
+      value: 0.63529414
       objectReference: {fileID: 0}
     - target: {fileID: 2994230347842125925, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: _activeSlotColor.g
-      value: 0.76862746
+      value: 0.63529414
       objectReference: {fileID: 0}
     - target: {fileID: 2994230347842125925, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: _activeSlotColor.r
-      value: 0.8039216
+      value: 0.63529414
       objectReference: {fileID: 0}
     - target: {fileID: 2994230347842125926, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: m_LocalScale.x
@@ -384,15 +384,15 @@ PrefabInstance:
       objectReference: {fileID: 9203127443749875044}
     - target: {fileID: 2994230347997519578, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: _activeSlotColor.b
-      value: 1
+      value: 0.63529414
       objectReference: {fileID: 0}
     - target: {fileID: 2994230347997519578, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: _activeSlotColor.g
-      value: 0.76862746
+      value: 0.63529414
       objectReference: {fileID: 0}
     - target: {fileID: 2994230347997519578, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: _activeSlotColor.r
-      value: 0.8039216
+      value: 0.63529414
       objectReference: {fileID: 0}
     - target: {fileID: 2994230347997519579, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: m_LocalScale.x
@@ -452,15 +452,15 @@ PrefabInstance:
       objectReference: {fileID: 6087547181363127560}
     - target: {fileID: 2994230348318045570, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: _activeSlotColor.b
-      value: 1
+      value: 0.63529414
       objectReference: {fileID: 0}
     - target: {fileID: 2994230348318045570, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: _activeSlotColor.g
-      value: 0.76862746
+      value: 0.63529414
       objectReference: {fileID: 0}
     - target: {fileID: 2994230348318045570, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: _activeSlotColor.r
-      value: 0.8039216
+      value: 0.63529414
       objectReference: {fileID: 0}
     - target: {fileID: 3787468855518630767, guid: 26c1571ac3c772845a2447235a99346c, type: 3}
       propertyPath: m_LocalPosition.x
