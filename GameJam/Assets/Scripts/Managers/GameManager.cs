@@ -1,6 +1,7 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace Managers
@@ -20,7 +21,13 @@ namespace Managers
 
         private MapManager _mapManager;
 
-        private void Awake()
+        [Header("Gem Events")][SerializeField] private UnityEvent _onGemAdded;
+
+        [SerializeField] private UnityEvent _onGedDecreased;
+        
+        
+
+            private void Awake()
         {
             if (instance == null)
                 instance = this;
@@ -49,7 +56,6 @@ namespace Managers
             }
 #endif
             
-            _gemText.SetText(PlayerPrefs.GetInt("Gems").ToString());
         }
 
         public void LoseGame()
@@ -85,6 +91,12 @@ namespace Managers
         {
             if (PlayerPrefs.GetInt("DeadMan") == CurrentLevel)
             {
+                PlayerPrefs.SetInt("Gems",PlayerPrefs.GetInt("Gems")-1);
+                
+                _gemText.SetText(PlayerPrefs.GetInt("Gems").ToString());
+
+                _onGedDecreased?.Invoke();
+                
                 _mapManager.ResetToLastCheckPoint();
 
                 PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Checkpoint"));
@@ -93,7 +105,7 @@ namespace Managers
 
                 return true;
             }
-
+            
             return false;
         }
 
@@ -146,18 +158,31 @@ namespace Managers
         {
             int level = PlayerPrefs.GetInt(Level, 1);
 
-            if (level > 3)
+            if (level == SceneManager.sceneCountInBuildSettings)
             {
-                PlayerPrefs.SetInt(Level, 3);
-                level = 3;
+                level = SceneManager.sceneCountInBuildSettings -1;
+                PlayerPrefs.SetInt(Level, level);
             }
             else if (level < 1)
             {
-                PlayerPrefs.SetInt(Level, 1);
-                level = 1;
+                PlayerPrefs.SetInt(Level, 2);
+                level = 2;
             }
 
             SceneManager.LoadScene(level);
         }
+
+        #region Gem
+
+        public void AddGem()
+        {
+            PlayerPrefs.SetInt("Gems", PlayerPrefs.GetInt("Gems", 0) + 1);
+
+            _gemText.SetText(PlayerPrefs.GetInt("Gems").ToString());
+            
+            _onGemAdded?.Invoke();
+        }
+
+        #endregion
     }
 }
