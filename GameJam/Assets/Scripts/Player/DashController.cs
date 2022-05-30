@@ -47,8 +47,6 @@ public class DashController : MonoBehaviour
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
-
-        _audioSource = GetComponent<AudioSource>();
         
         _directionTypes = Enum.GetValues(typeof(DirectionType)).Cast<DirectionType>();
     }

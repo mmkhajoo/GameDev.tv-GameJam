@@ -48,6 +48,8 @@ namespace DefaultNamespace
         [Header("Audio Source")] [SerializeField]
         private AudioSource _audioSource;
 
+        [SerializeField] private AudioSource _transitionAudioSource;
+
         #endregion
 
         #region Private Properties
@@ -70,7 +72,6 @@ namespace DefaultNamespace
             _boxCollider2D = GetComponent<BoxCollider2D>();
             _circleCollider2D = GetComponent<CircleCollider2D>();
             _rigidbody2D = GetComponent<Rigidbody2D>();
-            _audioSource = GetComponent<AudioSource>();
 
             _playerMovement.OnJump += () =>
             {
@@ -178,7 +179,7 @@ namespace DefaultNamespace
 
             _isTransitioning = true;
 
-            AudioManager.instance.PlaySoundEffect(_audioSource, AudioTypes.Feesh);
+            AudioManager.instance.PlaySoundEffect(_transitionAudioSource, AudioTypes.Feesh);
 
             LeanTween.move(gameObject, transitableObject.transform, _transitionTime);
             LeanTween.scale(gameObject, Vector3.zero, _transitionTime).setOnComplete(OnTransitionCompleted);
