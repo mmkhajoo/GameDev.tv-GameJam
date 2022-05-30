@@ -7,6 +7,8 @@ using UnityEngine.Events;
 public class TutorialText : MonoBehaviour
 {
     [SerializeField]
+    private bool _isOneTimeShow = true;
+    [SerializeField]
     private bool _isShow;
     [SerializeField]
     private float _showTime;
@@ -15,6 +17,7 @@ public class TutorialText : MonoBehaviour
     [SerializeField]
     private Transform _playerDetect;
 
+    private int _numberShow;
     private Transform _player;
 
 
@@ -38,7 +41,13 @@ public class TutorialText : MonoBehaviour
 
     public void Show()
     {
+        if(_isOneTimeShow)
+        {
+            if (_numberShow > 0)
+                return;
+        }
         _isShow = true;
+        _numberShow++;
         gameObject.SetActive(true);
         LeanTween.scale(gameObject, Vector3.one, _showTime);
         OnShowUp?.Invoke();
