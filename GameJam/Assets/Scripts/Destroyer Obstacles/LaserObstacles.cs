@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class LaserObstacles : MonoBehaviour, IDestroyerObstacles
 {
+    [SerializeField]
+    private bool _destroyObjects = true;
 
     [SerializeField]
     private GameObject _spriteGameObject;
@@ -45,7 +47,7 @@ public class LaserObstacles : MonoBehaviour, IDestroyerObstacles
 
         if (collision.transform.CompareTag("Transitionable"))
         {
-            collision.GetComponent<ObjectController>().Destroy(true);
+            collision.GetComponent<ObjectController>().Destroy(_destroyObjects);
         }
 
         else if (collision.transform.CompareTag("Player"))
