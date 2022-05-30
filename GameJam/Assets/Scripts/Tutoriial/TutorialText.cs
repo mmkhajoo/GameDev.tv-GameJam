@@ -7,6 +7,8 @@ using UnityEngine.Events;
 public class TutorialText : MonoBehaviour
 {
     [SerializeField]
+    private bool _isShow;
+    [SerializeField]
     private float _showTime;
     [SerializeField]
     private bool _haveDetectiion;
@@ -14,6 +16,7 @@ public class TutorialText : MonoBehaviour
     private Transform _playerDetect;
 
     private Transform _player;
+
 
     #region Events
 
@@ -26,12 +29,16 @@ public class TutorialText : MonoBehaviour
     
     public void Close()
     {
+        if (!_isShow)
+            return;
+        _isShow = false;
         OnClose?.Invoke();
         LeanTween.scale(gameObject, Vector3.zero, _showTime).setOnComplete(() => { gameObject.SetActive(false); } );
     }
 
     public void Show()
     {
+        _isShow = true;
         gameObject.SetActive(true);
         LeanTween.scale(gameObject, Vector3.one, _showTime);
         OnShowUp?.Invoke();
