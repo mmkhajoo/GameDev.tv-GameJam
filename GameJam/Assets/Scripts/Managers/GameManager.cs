@@ -165,7 +165,7 @@ namespace Managers
 
             if (level == SceneManager.sceneCountInBuildSettings)
             {
-                level = SceneManager.sceneCountInBuildSettings -1;
+                level = SceneManager.sceneCountInBuildSettings - 2;
                 PlayerPrefs.SetInt(Level, level);
             }
             else if (level < 1)
