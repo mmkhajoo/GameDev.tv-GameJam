@@ -6,7 +6,7 @@ namespace Managers
     {
         public void StartGame()
         {
-            GameManager.instance.GoToNextLevel();
+            GameManager.instance.LoadLevel();
         }
 
         public void Exit()

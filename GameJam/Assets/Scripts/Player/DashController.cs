@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace;
 using DG.Tweening;
+using Managers.Audio_Manager;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -31,6 +32,10 @@ public class DashController : MonoBehaviour
     [Header("Event")] [SerializeField] private UnityEvent _onDash;
 
     [SerializeField] private LayerMask _dashableMask; 
+    
+    [Header("Audio Source")] [SerializeField]
+    private AudioSource _audioSource;
+
 
     private void Awake()
     {
@@ -43,7 +48,8 @@ public class DashController : MonoBehaviour
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
 
-
+        _audioSource = GetComponent<AudioSource>();
+        
         _directionTypes = Enum.GetValues(typeof(DirectionType)).Cast<DirectionType>();
     }
 
@@ -88,6 +94,8 @@ public class DashController : MonoBehaviour
 
         _dashClicked = true;
 
+        AudioManager.instance.PlaySoundEffect(_audioSource, AudioTypes.Dash);
+
         _onDash?.Invoke();
     }
 
@@ -100,7 +108,7 @@ public class DashController : MonoBehaviour
 
         if (dashableRaycastHit2D.collider != null)
         {
-            if (!dashableRaycastHit2D.collider.CompareTag("Dashable"))
+            if (!dashableRaycastHit2D.collider.CompareTag("Dashable") && !dashableRaycastHit2D.collider.CompareTag("Win"))
             {
                 return false;
             }

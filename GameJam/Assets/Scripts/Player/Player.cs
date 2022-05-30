@@ -1,5 +1,6 @@
 ﻿using System;
 using Managers;
+using Managers.Audio_Manager;
 using Objects;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -43,6 +44,10 @@ namespace DefaultNamespace
         [SerializeField] private UnityEvent OnTransitioned;
         [SerializeField] private UnityEvent OnPlayerGotOut;
 
+
+        [Header("Audio Source")] [SerializeField]
+        private AudioSource _audioSource;
+
         #endregion
 
         #region Private Properties
@@ -65,9 +70,18 @@ namespace DefaultNamespace
             _boxCollider2D = GetComponent<BoxCollider2D>();
             _circleCollider2D = GetComponent<CircleCollider2D>();
             _rigidbody2D = GetComponent<Rigidbody2D>();
+            _audioSource = GetComponent<AudioSource>();
 
-            _playerMovement.OnJump += () => { OnPlayerJumped?.Invoke(); };
-            _playerMovement.OnLand += () => { OnPlayerLand?.Invoke(); };
+            _playerMovement.OnJump += () =>
+            {
+                OnPlayerJumped?.Invoke();
+                AudioManager.instance.PlaySoundEffect(_audioSource, AudioTypes.Jump);
+            };
+            _playerMovement.OnLand += () =>
+            {
+                OnPlayerLand?.Invoke();
+                AudioManager.instance.PlaySoundEffect(_audioSource, AudioTypes.Land);
+            };
         }
 
         private void Update()
@@ -164,6 +178,8 @@ namespace DefaultNamespace
 
             _isTransitioning = true;
 
+            AudioManager.instance.PlaySoundEffect(_audioSource, AudioTypes.Feesh);
+
             LeanTween.move(gameObject, transitableObject.transform, _transitionTime);
             LeanTween.scale(gameObject, Vector3.zero, _transitionTime).setOnComplete(OnTransitionCompleted);
         }
@@ -186,7 +202,7 @@ namespace DefaultNamespace
             var targetPosition = _objectTransitionedTo.Transform.position + Vector3.down * 0.1f;
 
             _isTransitioning = true;
-
+            
             LeanTween.move(gameObject, targetPosition, _transitionTime);
 
             LeanTween.scale(gameObject, Vector3.one, _transitionTime).setOnComplete(() =>
