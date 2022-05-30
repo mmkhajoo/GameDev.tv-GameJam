@@ -157,7 +157,7 @@ namespace Managers
                 level = 1;
             }
 
-            SceneManager.LoadScene("Level " + level);
+            SceneManager.LoadScene(level);
         }
     }
 }
