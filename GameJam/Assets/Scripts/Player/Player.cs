@@ -53,6 +53,8 @@ namespace DefaultNamespace
 
         private bool _isTransitioning;
 
+        private bool _collisionTriggered;
+
         private void Awake()
         {
             _playerMovement = GetComponent<PlayerMovement>();
@@ -216,10 +218,15 @@ namespace DefaultNamespace
         void OnCollisionEnter2D(Collision2D collision)
         {
             Debug.Log("Collision Called.");
+
+            if (_collisionTriggered)
+                return;
             
             if (collision.collider.CompareTag("Deadly"))
             {
                 Die();
+                _collisionTriggered = true;
+                return;
             }
 
             if (collision.collider.CompareTag("Win"))
@@ -228,6 +235,8 @@ namespace DefaultNamespace
                 
                 LeanTween.move(gameObject, collision.collider.transform, _transitionTime);
                 LeanTween.scale(gameObject, Vector3.zero, _transitionTime).setOnComplete(GameManager.instance.WinGame);
+                
+                _collisionTriggered = true;
             }
         }
     }

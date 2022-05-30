@@ -14,6 +14,11 @@ namespace Managers
 
         [SerializeField] private TextMeshProUGUI _gemText;
 
+
+        [SerializeField] private GameObject _resetButton;
+        [SerializeField] private GameObject _gemPanel;
+        
+
         public int CurrentLevel => PlayerPrefs.GetInt("Level", 1);
 
 
@@ -169,6 +174,17 @@ namespace Managers
                 level = 2;
             }
 
+            if (level >= 3)
+            {
+                _resetButton.SetActive(true);
+                _gemPanel.SetActive(true);
+            }
+            else
+            {
+                _resetButton.SetActive(true);
+                _gemPanel.SetActive(true);
+            }
+            
             SceneManager.LoadScene(level);
         }
 
