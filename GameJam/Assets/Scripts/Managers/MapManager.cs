@@ -34,7 +34,7 @@ namespace Managers
 
         public void ResetToLastCheckPoint()
         {
-            PlayerPrefs.SetInt(DeadMan, 1);
+            PlayerPrefs.SetInt(DeadMan, PlayerPrefs.GetInt("PreviousCheckpoint"));
             
             SetPlayerAndDeadManPosition();
         }

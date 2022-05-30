@@ -1,17 +1,34 @@
 ﻿using System;
+using Managers;
 using UnityEngine;
 
 namespace Objects
 {
     public class GemBehaviour : MonoBehaviour
     {
+        private bool _triggered;
+
+        private string gemName;
+
+        private void Awake()
+        {
+            var level = GameManager.instance.CurrentLevel;
+            gemName = "Gem " + "Level " + level + name;
+            
+            if (PlayerPrefs.HasKey(gemName))
+                gameObject.SetActive(false);
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.CompareTag("Player"))
             {
+                if(_triggered)
+                    return;
+                
                 AddGem();
                 Destroy(gameObject);
-                return;
+                _triggered = true;
             }
 
             // if (collision.CompareTag("Transitionable"))
@@ -26,7 +43,8 @@ namespace Objects
         
         private void AddGem()
         {
-            PlayerPrefs.SetInt("Gems", PlayerPrefs.GetInt("Gems", 0) + 1);
+            GameManager.instance.AddGem();
+            PlayerPrefs.SetInt(gemName, 0);
         }
     }
 }

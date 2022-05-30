@@ -9,7 +9,11 @@ namespace Objects
         {
             if (collision.CompareTag("Player"))
             {
+                Debug.Log("Checkpoint Seted");
+                
                 var level = GameManager.instance.CurrentLevel+1;
+                
+                PlayerPrefs.SetInt("PreviousCheckpoint",PlayerPrefs.GetInt("Checkpoint",level));
 
                 PlayerPrefs.SetInt("Checkpoint", level);
                 
