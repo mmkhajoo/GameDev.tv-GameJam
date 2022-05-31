@@ -180,14 +180,22 @@ namespace Managers
                 level = 2;
             }
 
-            if (level >= 4)
+            if (level >= 3)
             {
                 _resetButton.SetActive(true);
-                _gemPanel.SetActive(true);
             }
             else
             {
                 _resetButton.SetActive(false);
+            }
+            
+
+            if (level >= 4)
+            {
+                _gemPanel.SetActive(true);
+            }
+            else
+            {
                 _gemPanel.SetActive(false);
             }
 

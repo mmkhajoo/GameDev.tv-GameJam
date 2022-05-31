@@ -112,15 +112,15 @@ public class DashController : MonoBehaviour
             }
         }
         
-        RaycastHit2D rightHit =
-            Physics2D.Raycast(targetPosition + _playerMovement.Direction * _boxCollider2D.size.x / 2, Vector2.zero);
-        RaycastHit2D leftHit = Physics2D.Raycast(targetPosition - _playerMovement.Direction * _boxCollider2D.size.x / 2,
-            Vector2.zero);
-
-        if (rightHit.collider != null || leftHit.collider != null)
-        {
-            return false;
-        }
+        // RaycastHit2D rightHit =
+        //     Physics2D.Raycast(targetPosition + _playerMovement.Direction * _boxCollider2D.size.x / 2, Vector2.zero);
+        // RaycastHit2D leftHit = Physics2D.Raycast(targetPosition - _playerMovement.Direction * _boxCollider2D.size.x / 2,
+        //     Vector2.zero);
+        //
+        // if (rightHit.collider != null || leftHit.collider != null)
+        // {
+        //     return false;
+        // }
 
 
         foreach (var directionType in _directionTypes)
