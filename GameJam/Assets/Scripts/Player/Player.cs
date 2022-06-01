@@ -10,6 +10,8 @@ namespace DefaultNamespace
 {
     public class Player : MonoBehaviour, IPlayer
     {
+        public Transform Transform => transform;
+
         [Header("Transition Configs")] [SerializeField]
         private float _searchObjectRadius = 1f;
 

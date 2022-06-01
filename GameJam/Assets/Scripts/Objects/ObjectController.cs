@@ -23,26 +23,33 @@ namespace Objects
         #endregion
 
         [SerializeField] private ObjectType _objectType;
-        
+
         [Header("Win Transition Time")] [SerializeField]
         private float _transitionTime = 0.1f;
-        
+
         #region Events
-        [Header("Events")] 
-        [SerializeField] private UnityEvent OnTransitioned;
+
+        [Header("Events")] [SerializeField] private UnityEvent OnTransitioned;
         [SerializeField] private UnityEvent OnPlayerGotOut;
+
         #endregion
-        
+
         protected Collider2D _collider2D;
         protected Rigidbody2D _rigidbody2D;
 
-       
+
         private void Awake()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _collider2D = GetComponent<Collider2D>();
 
             Disable();
+        }
+
+        private void Update()
+        {
+            if (_player != null)
+                _player.Transform.position = transform.position;
         }
 
         public void SetPlayer(IPlayer player)
@@ -60,13 +67,12 @@ namespace Objects
             _player = null;
 
             Disable();
-            
+
             OnPlayerGotOut.Invoke();
         }
 
         public void Destroy(bool isDestroySelf)
         {
-
             if (_player != null)
                 _player.Die();
 
@@ -107,7 +113,8 @@ namespace Objects
                 if (_player != null)
                 {
                     LeanTween.move(gameObject, collision.collider.transform, _transitionTime);
-                    LeanTween.scale(gameObject, Vector3.zero, _transitionTime).setOnComplete(GameManager.instance.WinGame);
+                    LeanTween.scale(gameObject, Vector3.zero, _transitionTime)
+                        .setOnComplete(GameManager.instance.WinGame);
                 }
             }
         }
