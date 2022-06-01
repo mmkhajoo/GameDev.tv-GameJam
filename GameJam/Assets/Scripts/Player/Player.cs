@@ -183,6 +183,9 @@ namespace DefaultNamespace
 
             AudioManager.instance.PlaySoundEffect(_transitionAudioSource, AudioTypes.Feesh);
 
+            _circleCollider2D.enabled = false;
+            _boxCollider2D.enabled = false;
+
             LeanTween.move(gameObject, transitableObject.transform, _transitionTime);
             LeanTween.scale(gameObject, Vector3.zero, _transitionTime).setOnComplete(OnTransitionCompleted);
         }
@@ -211,6 +214,9 @@ namespace DefaultNamespace
             LeanTween.scale(gameObject, Vector3.one, _transitionTime).setOnComplete(() =>
             {
                 _isTransitioning = false;
+                
+                _circleCollider2D.enabled = true;
+                _boxCollider2D.enabled = true;
 
                 Enable();
 
