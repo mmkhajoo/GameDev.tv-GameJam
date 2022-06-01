@@ -7,6 +7,8 @@ using UnityEngine.Events;
 public class TutorialText : MonoBehaviour
 {
     [SerializeField]
+    private GameObject _targetGameObject;
+    [SerializeField]
     private bool _isOneTimeShow = true;
     [SerializeField]
     private bool _isShow;
@@ -36,7 +38,7 @@ public class TutorialText : MonoBehaviour
             return;
         _isShow = false;
         OnClose?.Invoke();
-        LeanTween.scale(gameObject, Vector3.zero, _showTime).setOnComplete(() => { gameObject.SetActive(false); } );
+        LeanTween.scale(_targetGameObject, Vector3.zero, _showTime).setOnComplete(() => { _targetGameObject.SetActive(false); } );
     }
 
     public void Show()
@@ -48,13 +50,15 @@ public class TutorialText : MonoBehaviour
         }
         _isShow = true;
         _numberShow++;
-        gameObject.SetActive(true);
-        LeanTween.scale(gameObject, Vector3.one, _showTime);
+        _targetGameObject.SetActive(true);
+        LeanTween.scale(_targetGameObject, Vector3.one, _showTime);
         OnShowUp?.Invoke();
     }
-    private void Start()
+    private void Awake()
     {
         _player = GameObject.FindGameObjectWithTag("Player").transform;
+        if (_targetGameObject == null)
+            _targetGameObject = gameObject;
     }
 
     private void Update()
@@ -63,5 +67,7 @@ public class TutorialText : MonoBehaviour
             return;
         if (Vector2.Distance(_playerDetect.position, _player.position) < 2)
             Show();
+        if (Vector2.Distance(_playerDetect.position, _player.position) > 2)
+            Close();
     }
 }

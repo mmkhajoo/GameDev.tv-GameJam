@@ -190,7 +190,7 @@ namespace Managers
             }
             
 
-            if (level >= 4)
+            if (level >= 5)
             {
                 _gemPanel.SetActive(true);
             }
