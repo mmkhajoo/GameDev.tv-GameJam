@@ -258,6 +258,19 @@ namespace DefaultNamespace
                 _collisionTriggered = true;
             }
         }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Win"))
+            {
+                Disable();
+                
+                LeanTween.move(gameObject, collision.transform, _transitionTime);
+                LeanTween.scale(gameObject, Vector3.zero, _transitionTime).setOnComplete(GameManager.instance.WinGame);
+                
+                _collisionTriggered = true;
+            }
+        }
     }
 
     [Serializable]

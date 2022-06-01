@@ -14,8 +14,12 @@ public class TutorialText : MonoBehaviour
     private bool _isShow;
     [SerializeField]
     private float _showTime;
+    
+    [Header("Detection")]
     [SerializeField]
     private bool _haveDetectiion;
+
+    [SerializeField] private float _detectionOffset = 2;
     [SerializeField]
     private Transform _playerDetect;
 
@@ -65,9 +69,9 @@ public class TutorialText : MonoBehaviour
     {
         if (!_haveDetectiion)
             return;
-        if (Vector2.Distance(_playerDetect.position, _player.position) < 2)
+        if (Vector2.Distance(_playerDetect.position, _player.position) < _detectionOffset)
             Show();
-        if (Vector2.Distance(_playerDetect.position, _player.position) > 2)
+        if (Vector2.Distance(_playerDetect.position, _player.position) > _detectionOffset)
             Close();
     }
 }
