@@ -128,7 +128,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 0.6
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 9e1c9c3dc43170643bbf28f9963c10c8, type: 2}
@@ -173,6 +173,7 @@ MonoBehaviour:
   _isShow: 0
   _showTime: 0.2
   _haveDetectiion: 1
+  _detectionOffset: 2
   _playerDetect: {fileID: 1275539641102498295}
   OnShowUp:
     m_PersistentCalls:
