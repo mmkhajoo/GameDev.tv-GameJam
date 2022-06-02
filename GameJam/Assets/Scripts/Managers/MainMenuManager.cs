@@ -13,5 +13,10 @@ namespace Managers
         {
             Application.Quit();
         }
+
+        public void ClearAllPlayerPrefs()
+        {
+            PlayerPrefs.DeleteAll();
+        }
     }
 }
