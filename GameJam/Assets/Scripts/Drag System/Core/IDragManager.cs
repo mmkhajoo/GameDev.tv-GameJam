@@ -7,9 +7,9 @@ public interface IDragManager
 {
     DragItem SelectedObject { get; }
 
-    Action<IDragable,ISlot> OnRelease { get; }
+    Action<IDragable,ISlot, bool> OnRelease { get; }
 
-    Action OnDrag { get; }
+    Action<bool> OnDrag { get; }
 
-    void RegiterCallBack(Action onDrag, Action<IDragable, ISlot> onRelease);
+    void RegisterCallBack(Action<bool> onDrag, Action<IDragable, ISlot, bool> onRelease);
 }

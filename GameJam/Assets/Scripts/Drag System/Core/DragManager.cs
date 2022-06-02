@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DragManager : MonoBehaviour, IDragManager
 {
@@ -13,8 +14,11 @@ public class DragManager : MonoBehaviour, IDragManager
     [SerializeField]
     private List<DragItem> _dragItems;
 
-    private Action<IDragable, ISlot> _onRelease;
-    private Action _onDrag;
+    [SerializeField] private UnityEvent onDragEvent;
+    [SerializeField] private UnityEvent onDragRelease;
+    
+    private Action<IDragable, ISlot,bool> _onRelease;
+    private Action<bool> _onDrag;
     private DragItem _selectedDragble;
     private Rigidbody2D _selectedObjectRb;
     private Vector3 offset;
@@ -25,8 +29,8 @@ public class DragManager : MonoBehaviour, IDragManager
     #region Properties
 
     public Vector3 DragPosition => GetDragPosition();
-    public Action<IDragable, ISlot> OnRelease => _onRelease;
-    public Action OnDrag => _onDrag;
+    public Action<IDragable, ISlot,bool> OnRelease => _onRelease;
+    public Action<bool> OnDrag => _onDrag;
     public DragItem SelectedObject => _selectedDragble;
 
     #endregion
@@ -45,9 +49,19 @@ public class DragManager : MonoBehaviour, IDragManager
                 }
             }
         }
+
+        RegisterCallBack(((isScrollDrag) =>
+        {
+            if(!isScrollDrag)
+                onDragEvent.Invoke();
+        }), (dragable, slot,isScrollDrag) =>
+        {
+            if(!isScrollDrag)
+                onDragRelease.Invoke();
+        });
     }
 
-    public void RegiterCallBack(Action onDrag, Action<IDragable, ISlot> onRelease)
+    public void RegisterCallBack(Action<bool> onDrag, Action<IDragable, ISlot,bool> onRelease)
     {
         _onDrag += onDrag;
         _onRelease += onRelease;
@@ -90,7 +104,7 @@ public class DragManager : MonoBehaviour, IDragManager
 
                     _selectedDragble = (DragItem)drag;
 
-                    OnDrag?.Invoke();
+                    OnDrag?.Invoke(_selectedDragble.IsScrollDrag);
 
                     _selectedObjectRb = item.transform.gameObject.GetComponent<Rigidbody2D>();
                     offset = _selectedObjectRb.transform.position - mousePosition;
@@ -105,6 +119,7 @@ public class DragManager : MonoBehaviour, IDragManager
                 _selectedDragble.CurrentSlot.OnPlaceDragItem((DragItem)SelectedObject, DragPosition);
                 _selectedObjectRb = null;
                 _selectedDragble = null;
+                OnRelease?.Invoke(SelectedObject, null,true);
                 return;
             }
 
@@ -116,7 +131,7 @@ public class DragManager : MonoBehaviour, IDragManager
                 {
                     slot.OnPlaceDragItem((DragItem)SelectedObject, DragPosition);
 
-                    OnRelease?.Invoke(SelectedObject, slot);
+                    OnRelease?.Invoke(SelectedObject, slot,false);
 
                     _selectedObjectRb = null;
                     _selectedDragble = null;
@@ -126,7 +141,9 @@ public class DragManager : MonoBehaviour, IDragManager
             }
 
             _selectedDragble.OnInvalidePlacement();
-
+            
+            OnRelease?.Invoke(SelectedObject, null,false);
+            
             _selectedObjectRb = null;
             _selectedDragble = null;
 
