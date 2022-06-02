@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Managers
 {
@@ -14,8 +15,9 @@ namespace Managers
             Application.Quit();
         }
 
-        public void ClearAllPlayerPrefs()
+        public void ResetGame()
         {
+            SceneManager.LoadScene("Main Menu");
             PlayerPrefs.DeleteAll();
         }
     }
