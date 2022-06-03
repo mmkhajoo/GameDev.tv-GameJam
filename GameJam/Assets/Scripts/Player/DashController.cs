@@ -106,7 +106,7 @@ public class DashController : MonoBehaviour
         RaycastHit2D dashableRaycastHit2D =
             Physics2D.Raycast(transform.position, _playerMovement.Direction, _dashDistance,_dashableMask);
 
-        if (dashableRaycastHit2D.collider != null)
+        if (dashableRaycastHit2D.collider != null && !dashableRaycastHit2D.collider.CompareTag("Dashable") )
         {
 
             targetPosition = dashableRaycastHit2D.point - (Vector2)(_playerMovement.Direction * _boxCollider2D.size.x / 2f);
