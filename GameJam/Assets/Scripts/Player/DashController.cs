@@ -21,6 +21,8 @@ public class DashController : MonoBehaviour
     [SerializeField] private float _dashDistance;
     [SerializeField] private float _dashTime;
 
+    [SerializeField] private float _dashMinimumOffset = 0.5f;
+
     private Vector3 _startedPosition;
     private Vector3 _targetPosition;
     private IEnumerable<DirectionType> _directionTypes;
@@ -106,11 +108,18 @@ public class DashController : MonoBehaviour
 
         if (dashableRaycastHit2D.collider != null)
         {
-            if (!dashableRaycastHit2D.collider.CompareTag("Dashable") && !dashableRaycastHit2D.collider.CompareTag("Win"))
-            {
-                return false;
-            }
+
+            targetPosition = dashableRaycastHit2D.point - (Vector2)(_playerMovement.Direction * _boxCollider2D.size.x / 2f);
+            
+            
+            // if (!dashableRaycastHit2D.collider.CompareTag("Dashable") && !dashableRaycastHit2D.collider.CompareTag("Win"))
+            // {
+            //     return false;
+            // }
         }
+
+        if (Vector2.Distance(transform.position, targetPosition) < _dashMinimumOffset)
+            return false;
         
         // RaycastHit2D rightHit =
         //     Physics2D.Raycast(targetPosition + _playerMovement.Direction * _boxCollider2D.size.x / 2, Vector2.zero);
@@ -123,11 +132,11 @@ public class DashController : MonoBehaviour
         // }
 
 
-        foreach (var directionType in _directionTypes)
-        {
-            if (!CheckDirectionWall(directionType, targetPosition))
-                return false;
-        }
+        // foreach (var directionType in _directionTypes)
+        // {
+        //     if (!CheckDirectionWall(directionType, targetPosition))
+        //         return false;
+        // }
 
         _startedPosition = transform.position;
         _targetPosition = targetPosition;
