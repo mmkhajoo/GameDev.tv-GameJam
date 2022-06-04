@@ -50,5 +50,17 @@ namespace Managers.Audio_Manager
             audioSource.Play();
         }
 
+        public void StopSoundEffect(AudioSource audioSource)
+        {
+            audioSource.Stop();
+        }
+        public void PauseSoundEffect(AudioSource audioSource)
+        {
+            _mainSoundSource.Pause();
+        }
+        public void ContinueSoundEffect(AudioSource audioSource)
+        {
+            _mainSoundSource.Play();
+        }
     }
 }

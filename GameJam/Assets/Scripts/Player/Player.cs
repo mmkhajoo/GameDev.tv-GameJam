@@ -51,7 +51,7 @@ namespace DefaultNamespace
         private AudioSource _audioSource;
 
         [SerializeField] private AudioSource _transitionAudioSource;
-
+        [SerializeField] private AudioSource _walkAudioSource;
         #endregion
 
         #region Private Properties
@@ -85,6 +85,17 @@ namespace DefaultNamespace
                 OnPlayerLand?.Invoke();
                 AudioManager.instance.PlaySoundEffect(_audioSource, AudioTypes.Land);
             };
+            _onPlayerStateChanged.AddListener(state =>
+            {
+                if (state == PlayerStateType.Walking)
+                {
+                    AudioManager.instance.PlaySoundEffect(_walkAudioSource, AudioTypes.Walk);
+                }
+                else
+                {
+                    AudioManager.instance.StopSoundEffect(_walkAudioSource);
+                }
+            });
         }
 
         private void Update()
@@ -181,7 +192,7 @@ namespace DefaultNamespace
 
             _isTransitioning = true;
 
-            AudioManager.instance.PlaySoundEffect(_transitionAudioSource, AudioTypes.Feesh);
+            AudioManager.instance.PlaySoundEffect(_transitionAudioSource, AudioTypes.PossesIn);
 
             _circleCollider2D.enabled = false;
             _boxCollider2D.enabled = false;
@@ -227,6 +238,8 @@ namespace DefaultNamespace
                 
                 OnPlayerGotOut?.Invoke();
             });
+            
+            AudioManager.instance.PlaySoundEffect(_transitionAudioSource, AudioTypes.PossesOut);
         }
 
         public void Die()
@@ -234,7 +247,8 @@ namespace DefaultNamespace
             Disable();
             
             SetPlayerState(PlayerStateType.Die);
-
+            
+            AudioManager.instance.PlaySoundEffect(_audioSource,AudioTypes.Die);
             //TODO : Play Die Animation;
 
             GameManager.instance.LoseGame();

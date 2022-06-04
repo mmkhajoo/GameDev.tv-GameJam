@@ -14,5 +14,16 @@
         Dash = 9,
         Poof = 10,
         Feesh =11,
+        PossesIn=12,
+        PossesOut=13,
+        Walk=14,
+        MagnetActivate=15,
+        BalloonActivate=16,
+        MetalImpact=17,
+        PaperImpact=18,
+        SoulShardCollect=19,
+        ButtonClicked=20,
+        Die=21
+        
     }
 }
