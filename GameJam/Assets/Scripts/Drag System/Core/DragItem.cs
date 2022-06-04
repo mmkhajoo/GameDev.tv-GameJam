@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Items;
 using UnityEngine;
 
 public class DragItem : MonoBehaviour, IDragable
@@ -14,6 +15,8 @@ public class DragItem : MonoBehaviour, IDragable
     private Vector3 _returnPosition;
     private DirectionType _directionType;
 
+    protected ItemSound _itemSound;
+    
     public bool IsScrollDrag => _isScrollDrag;
     public bool CanDrag => _canDrag;
     public DirectionType DirectionType => _directionType;
@@ -27,6 +30,7 @@ public class DragItem : MonoBehaviour, IDragable
     private void Start()
     {
         _returnPosition = transform.position;
+        _itemSound = GetComponent<ItemSound>();
     }
 
     protected virtual void Update()

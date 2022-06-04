@@ -13,7 +13,7 @@ namespace Items
         private ItemType _type;
         private bool _isActive;
         private bool _isEnable;
-
+        
         #endregion
 
         #region Properties
@@ -40,6 +40,9 @@ namespace Items
         {
             _isEnable = true;
             gameObject.SetActive(true);
+            
+            OnActive.AddListener(() => _itemSound.OnActivate(_type));
+            OnDeactive.AddListener(() => _itemSound.OnDeActivate());
         }
 
         public virtual void Disable()
@@ -61,5 +64,6 @@ namespace Items
         }
 
         #endregion
+        
     }
 }

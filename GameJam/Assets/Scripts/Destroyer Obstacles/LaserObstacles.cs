@@ -3,6 +3,7 @@ using Objects;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LaserObstacles : MonoBehaviour, IDestroyerObstacles
 {
@@ -23,6 +24,14 @@ public class LaserObstacles : MonoBehaviour, IDestroyerObstacles
     private float _tmpTime;
 
     public bool IsActive => _isActive;
+    
+    #region Events
+    [Header("Events")]
+    [Space]
+    public UnityEvent OnActive;
+    public UnityEvent OnDeactive;
+
+    #endregion
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -67,12 +76,14 @@ public class LaserObstacles : MonoBehaviour, IDestroyerObstacles
     {
         _isActive = true;
         _spriteGameObject.SetActive(true);
+        OnActive.Invoke();
     }
 
     public void Deactive()
     {
         _isActive = false;
         _spriteGameObject.SetActive(false);
+        OnDeactive.Invoke();
     }
 
     public void Execute()

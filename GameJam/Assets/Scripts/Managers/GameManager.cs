@@ -1,4 +1,5 @@
 ﻿using System;
+using Managers.Audio_Manager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -30,6 +31,7 @@ namespace Managers
         private UnityEvent _onGemAdded;
 
         [SerializeField] private UnityEvent _onGedDecreased;
+        [SerializeField] private AudioSource audioSource;
 
 
         private void Awake()
@@ -199,6 +201,14 @@ namespace Managers
                 _gemPanel.SetActive(false);
             }
 
+            if (level == 2)//Intro
+            {
+                AudioManager.instance.PauseSoundEffect(null);
+            }
+            if (level == 3)//Level 1
+            {
+                AudioManager.instance.ContinueSoundEffect(null);
+            }
             SceneManager.LoadScene(level);
         }
 
@@ -210,6 +220,7 @@ namespace Managers
 
             _gemText.SetText(PlayerPrefs.GetInt("Gems").ToString());
 
+            AudioManager.instance.PlaySoundEffect(audioSource,AudioTypes.SoulShardCollect);
             _onGemAdded?.Invoke();
         }
 
